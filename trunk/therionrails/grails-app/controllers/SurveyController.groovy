@@ -11,7 +11,7 @@ class SurveyController {
         params.max = Math.min( params.max ? params.max.toInteger() : 10,  100)
         [ surveyInstanceList: Survey.list( params ), surveyInstanceTotal: Survey.count() ]
     }
-    
+
     def show = {
         def surveyInstance = Survey.get( params.id )
 

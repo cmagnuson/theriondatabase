@@ -53,7 +53,13 @@
                         <tr class="prop">
                             <td valign="top" class="name">Survey Station:</td>
                             
-                            <td valign="top" class="value">${fieldValue(bean:surveyInstance, field:'surveyStation')}</td>
+                            <td  valign="top" style="text-align:left;" class="value">
+                                <ul>
+                                <g:each var="s" in="${surveyInstance.surveyStation}">
+                                    <li><g:link controller="surveyStation" action="show" id="${s.id}">${s?.encodeAsHTML()}</g:link></li>
+                                </g:each>
+                                </ul>
+                            </td>
                             
                         </tr>
                     
