@@ -62,6 +62,13 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:surveyInstance,field:'surveyStation','errors')}">
                                     
+<ul>
+<g:each var="s" in="${surveyInstance?.surveyStation?}">
+    <li><g:link controller="surveyStation" action="show" id="${s.id}">${s?.encodeAsHTML()}</g:link></li>
+</g:each>
+</ul>
+<g:link controller="surveyStation" params="['survey.id':surveyInstance?.id]" action="create">Add SurveyStation</g:link>
+
                                 </td>
                             </tr> 
                         
