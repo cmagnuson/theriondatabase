@@ -51,6 +51,19 @@
                         </tr>
                     
                         <tr class="prop">
+                            <td valign="top" class="name">Survey Connection:</td>
+                            
+                            <td  valign="top" style="text-align:left;" class="value">
+                                <ul>
+                                <g:each var="s" in="${surveyInstance.surveyConnection}">
+                                    <li><g:link controller="surveyConnection" action="show" id="${s.id}">${s?.encodeAsHTML()}</g:link></li>
+                                </g:each>
+                                </ul>
+                            </td>
+                            
+                        </tr>
+                    
+                        <tr class="prop">
                             <td valign="top" class="name">Survey Station:</td>
                             
                             <td  valign="top" style="text-align:left;" class="value">

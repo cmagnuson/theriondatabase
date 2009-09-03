@@ -58,6 +58,22 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
+                                    <label for="surveyConnection">Survey Connection:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:surveyInstance,field:'surveyConnection','errors')}">
+                                    
+<ul>
+<g:each var="s" in="${surveyInstance?.surveyConnection?}">
+    <li><g:link controller="surveyConnection" action="show" id="${s.id}">${s?.encodeAsHTML()}</g:link></li>
+</g:each>
+</ul>
+<g:link controller="surveyConnection" params="['survey.id':surveyInstance?.id]" action="create">Add SurveyConnection</g:link>
+
+                                </td>
+                            </tr> 
+                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
                                     <label for="surveyStation">Survey Station:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:surveyInstance,field:'surveyStation','errors')}">

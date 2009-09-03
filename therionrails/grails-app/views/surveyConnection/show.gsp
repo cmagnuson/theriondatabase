@@ -79,6 +79,13 @@
                         </tr>
                     
                         <tr class="prop">
+                            <td valign="top" class="name">Survey:</td>
+                            
+                            <td valign="top" class="value"><g:link controller="survey" action="show" id="${surveyConnectionInstance?.survey?.id}">${surveyConnectionInstance?.survey?.encodeAsHTML()}</g:link></td>
+                            
+                        </tr>
+                    
+                        <tr class="prop">
                             <td valign="top" class="name">To Station:</td>
                             
                             <td valign="top" class="value"><g:link controller="surveyStation" action="show" id="${surveyConnectionInstance?.toStation?.id}">${surveyConnectionInstance?.toStation?.encodeAsHTML()}</g:link></td>
