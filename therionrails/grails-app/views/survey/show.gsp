@@ -11,6 +11,7 @@
             <span class="menuButton"><a class="home" href="${resource(dir:'')}">Home</a></span>
             <span class="menuButton"><g:link class="list" action="list">Survey List</g:link></span>
             <span class="menuButton"><g:link class="create" action="create">New Survey</g:link></span>
+            <span class="menuButton"><g:link class="create" action="importSurveyData" controller="surveyDataImport" id="${fieldValue(bean:surveyInstance, field:'id')}">Import Data</g:link></span>
         </div>
         <div class="body">
             <h1>Show Survey</h1>

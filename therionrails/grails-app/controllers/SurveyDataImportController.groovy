@@ -43,9 +43,6 @@ class SurveyDataImportController {
 				def connection = new SurveyConnection(survey:surveyInstance, fromStation:stations.get(parts[0]), toStation:stations.get(parts[1]), length:parts[2], compass:parts[3], clino:parts[4], left:parts[5], right:parts[6], up:parts[7], down:parts[8])
 				connection.save()
 			}
-		
-			//add stations to survey
-
 
 			
 			

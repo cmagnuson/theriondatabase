@@ -1,0 +1,7 @@
+TODO:
+-add equates - make work for multiple (2+) matched survey stations
+-add measurement methods for surveys and custom sds for poor shots
+-add notes output
+-add features output
+-clean up interface, import, export
+-users and privledges - view vs. create/update vs. admin..?

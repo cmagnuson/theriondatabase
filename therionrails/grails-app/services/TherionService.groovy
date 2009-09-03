@@ -94,7 +94,27 @@ class TherionService implements InitializingBean
 		for(TunnelSystem ts: TunnelSystem.list()){
 			level+="input "+ts.name+".th\n";
 		}
-		level+="endsurvey\n";
+		level+="\n";
+		
+		for(Equate e: Equate.list()){
+			if(e.stations==null || e.stations.size()<2){
+				continue;
+			}
+			else{
+				SurveyStation first;
+				for(SurveyStation s: e.stations){
+					if(first==null){
+						first = s;
+						continue;
+					}
+					TunnelSystem ts = first.survey.system
+					TunnelSystem ts2 = s.survey.system
+					level+= "equate "+first.name+"@"+ts.name+"-"+first.survey.id+"."+first.survey.system.name+" "+s.name+"@"+ts2.name+"-"+s.survey.id+"."+s.survey.system.name+"\n";
+				}
+			}
+		}
+		
+		level+="\nendsurvey\n";
 
 		File f = new File(PATH+"levels/levels.th");
 		f.setText(level);
@@ -109,8 +129,8 @@ class TherionService implements InitializingBean
 			for(Survey s: ts.surveys){
 				output+="input "+ts.name+"-"+s.id+"\n";
 			}
-			output+= "\n" + 
-			" endsurvey\n" + 
+			output+= "\n"; 			
+			output+= " endsurvey\n" + 
 			"\n";
 			f = new File(PATH+"levels/"+ts.name+".th");
 			f.setText(output);
