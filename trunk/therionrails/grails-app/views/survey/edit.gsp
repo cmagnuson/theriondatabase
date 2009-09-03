@@ -58,12 +58,12 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="surveyConnection">Survey Connection:</label>
+                                    <label for="surveyConnections">Survey Connections:</label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean:surveyInstance,field:'surveyConnection','errors')}">
+                                <td valign="top" class="value ${hasErrors(bean:surveyInstance,field:'surveyConnections','errors')}">
                                     
 <ul>
-<g:each var="s" in="${surveyInstance?.surveyConnection?}">
+<g:each var="s" in="${surveyInstance?.surveyConnections?}">
     <li><g:link controller="surveyConnection" action="show" id="${s.id}">${s?.encodeAsHTML()}</g:link></li>
 </g:each>
 </ul>
@@ -74,12 +74,12 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="surveyStation">Survey Station:</label>
+                                    <label for="surveyStations">Survey Stations:</label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean:surveyInstance,field:'surveyStation','errors')}">
+                                <td valign="top" class="value ${hasErrors(bean:surveyInstance,field:'surveyStations','errors')}">
                                     
 <ul>
-<g:each var="s" in="${surveyInstance?.surveyStation?}">
+<g:each var="s" in="${surveyInstance?.surveyStations?}">
     <li><g:link controller="surveyStation" action="show" id="${s.id}">${s?.encodeAsHTML()}</g:link></li>
 </g:each>
 </ul>

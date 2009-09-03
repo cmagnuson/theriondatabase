@@ -15,6 +15,6 @@ class SurveyConnection {
     double down;
     
     public String toString(){
-    	fromStation +"->"+ toStation
+    	fromStation.toString() +"->"+ toStation.toString()
     }
 }

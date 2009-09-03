@@ -1,3 +1,5 @@
+import java.io.BufferedReader;
+import java.text.SimpleDateFormat;
 import org.springframework.beans.factory.InitializingBean
 import org.codehaus.groovy.grails.commons.ApplicationHolder 
 
@@ -7,12 +9,14 @@ class TherionService implements InitializingBean
 	def setting
 	def servletContext
 	def PATH
+	def OUTPUT_PATH
 
 	void afterPropertiesSet()
 	{
 		this.setting = grailsApplication.config.setting
 		this.servletContext = ApplicationHolder.getApplication().getParentContext().getServletContext()
 		this.PATH = servletContext.getRealPath("/")+"/generated/source/"
+		this.OUTPUT_PATH = "../output/";
 	}
 
 	def void exportSurvey(){
@@ -21,6 +25,8 @@ class TherionService implements InitializingBean
 		createMain()
 		createLevels()
 		createSurveys()
+
+		compile()
 	}
 
 	def void processInTherion(){
@@ -28,16 +34,31 @@ class TherionService implements InitializingBean
 
 	}
 
+	private void compile(){
+		ProcessBuilder pb = new ProcessBuilder("therion");
+		pb.directory(new File(PATH));
+		Process p = pb.start();
+		BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		String input = "";
+		while((input=br.readLine())!=null){
+			log.error input
+		}
+		p.waitFor();
+	}
+
 	private void createSurveys(){
 		for(Survey s: Survey.list()){
+
+			SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd@hh:mm:ss.00");
+			
 			String output = "encoding  utf-8\n" + 
 			" \n";
 			output+=" survey "+s.system.name+"-"+s.id+"  \\\n";
 			output+="   -title \""+s.title+"\" \\\n\n";
 			output+="   centerline\n" + 
 			" units length 1 meter\n" + 
-			"     team \""+s.team+"\"\n" + 
-			"     date "+s.datesurveyed+"\n" + 
+			"     team \""+s.team+"\"\n"+ 
+			"     date "+format.format(s.datesurveyed)+"\n" + 
 			"     walls on\n" + 
 			"     cs UTM15\n\n" +
 			"# "+s.note+"\n";
@@ -54,13 +75,13 @@ class TherionService implements InitializingBean
 			"  data normal from to length compass clino left right up down\n";
 
 			for(SurveyConnection sc: s.surveyConnections){
-				output+=sc.fromStation+" "+sc.toStation+" "+sc.length+" "+sc.compass+" "+sc.clino+" "+sc.left+" "+sc.right+" "+sc.up+" "+sc.down+"\n";
+				output+=sc.fromStation.name+" "+sc.toStation.name+" "+sc.length+" "+sc.compass+" "+sc.clino+" "+sc.left+" "+sc.right+" "+sc.up+" "+sc.down+"\n";
 			}
 			output+="      \n" + 
 			"   endcenterline\n" + 
 			" \n" + 
 			" endsurvey\n";
-			File f = new File(PATH+"levels/"+s.tunnelSystem.name+"-"+s.name+".th");
+			File f = new File(PATH+"levels/"+s.system.name+"-"+s.id+".th");
 			f.setText(output);
 		}
 	}
@@ -71,7 +92,7 @@ class TherionService implements InitializingBean
 		"survey main \n" + 
 		"\n";
 		for(TunnelSystem ts: TunnelSystem.list()){
-			level+=ts.name+".th\n";
+			level+="input "+ts.name+".th\n";
 		}
 		level+="endsurvey\n";
 
@@ -99,10 +120,9 @@ class TherionService implements InitializingBean
 	private createMain(){
 		String main = "encoding  utf-8\n" + 
 		" \n" + 
-		" survey Main  \n" + 
-		"   \n" + 
+		" survey Main  \\\n" + 
+		"   -title \"MainMap\" \\\n\n" + 
 		"   input levels/levels\n" + 
-		"   endmap\n" + 
 		"   \n" + 
 		" endsurvey\n";
 		File f = new File(PATH+"main.th");
@@ -150,7 +170,8 @@ class TherionService implements InitializingBean
 		"pop_label_fill_color; \n" + 
 		"fi; \n" + 
 		"enddef; \n" + 
-		"endcode \n"
+		"endcode \n" +
+		"endlayout \n"
 		File f = new File(PATH+"layout.th");
 		f.setText(layout);
 	}
@@ -158,32 +179,32 @@ class TherionService implements InitializingBean
 	private void createThconfig(){
 		String config = "encoding  utf-8\n" + 
 		"\n" + 
-		"input layout.th\n" + 
-		"source main.th\n" + 
+		"input layout.th \n" + 
+		"source main.th \n" + 
 		"\n" + 
-		"source          # additional source data \n" + 
-		"map all_map     # map that contains centerline and scrap map \n" + 
-		" #                 note@Main     # notes\n" + 
-		"      Main             # survey centerline data below scraps \n" + 
-		"endmap          # end of map \n" + 
-		"endsource       # end of additional source data \n" + 
+		"#source          # additional source data \n" + 
+		"#map all_map projection plan    # map that contains centerline and scrap map \n" + 
+		"# #                 note@Main     # notes\n" + 
+		"#      Main             # survey centerline data below scraps \n" + 
+		"#endmap          # end of map \n" + 
+		"#endsource       # end of additional source data \n" + 
 		"select all_map  # select this all_map for output \n" + 
-		"export model -format esri -o generated/output/esri\n" + 
-		"export model -format kml -o generated/output/cave.kml\n" + 
-		"export model -format dxf -o generated/output/cave.dxf\n" + 
-		"export model -format vrml -o generated/output/cave.vrml\n" + 
-		"export map   -format kml  -o  generated/output/cavemap.kml\n" + 
-		"export model -o generated/output/lab.lox\n" + 
-		"#export map  -projection plan -o generted/output/cave_m.pdf \n" + 
-		"export continuation-list -o generated/output/continuation.txt\n" + 
-		"#export atlas -projection plan -o generated/output/cave_a.pdf\n" + 
-		"export map -projection plan -layout lab-header -output generated/output/cave.pdf\n" + 
+		"export model -format esri -o "+OUTPUT_PATH+"esri\n" + 
+		"export model -format kml -o "+OUTPUT_PATH+"cave.kml\n" + 
+		"export model -format dxf -o "+OUTPUT_PATH+"cave.dxf\n" + 
+		"export model -format vrml -o "+OUTPUT_PATH+"cave.vrml\n" + 
+		"export map   -format kml  -o  "+OUTPUT_PATH+"cavemap.kml\n" + 
+		"export model -o "+OUTPUT_PATH+"cave.lox\n" + 
+		"#export map  -projection plan -o "+OUTPUT_PATH+"cave_m.pdf \n" + 
+		"export continuation-list -o "+OUTPUT_PATH+"continuation.txt\n" + 
+		"#export atlas -projection plan -o "+OUTPUT_PATH+"cave_a.pdf\n" + 
+		"export map -projection plan -layout lab-header -output "+OUTPUT_PATH+"cave.pdf\n" + 
 		"\n" + 
 		"layout xvi-export\n" + 
 		"  scale 1 100\n" + 
 		"  grid-size 1 1 1 m\n" + 
 		"endlayout\n" + 
-		"export map -fmt xvi -layout xvi-export -o generated/output/cave.xvi\n";
+		"export map -fmt xvi -layout xvi-export -o "+OUTPUT_PATH+"cave.xvi\n";
 		File f = new File(PATH+"thconfig");
 		f.setText(config); 
 	}
