@@ -10,7 +10,7 @@ class Survey {
 	String note;
 	TunnelSystem system;
 	
-    static hasMany = [surveyStation : SurveyStation]
+    static hasMany = [surveyStations : SurveyStation, surveyConnections : SurveyConnection]
 
 	public String toString(){
 		return system.toString()+": "+title;

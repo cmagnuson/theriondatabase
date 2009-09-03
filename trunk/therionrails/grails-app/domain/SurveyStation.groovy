@@ -3,7 +3,7 @@ class SurveyStation {
     static constraints = {
     }
     
-    Survey survey;
+    static belongsTo = [survey:Survey]
 	String name;
     String note;
     Date timeMeasured;

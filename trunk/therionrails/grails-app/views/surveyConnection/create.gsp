@@ -91,6 +91,15 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
+                                    <label for="survey">Survey:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:surveyConnectionInstance,field:'survey','errors')}">
+                                    <g:select optionKey="id" from="${Survey.list()}" name="survey.id" value="${surveyConnectionInstance?.survey?.id}" ></g:select>
+                                </td>
+                            </tr> 
+                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
                                     <label for="toStation">To Station:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:surveyConnectionInstance,field:'toStation','errors')}">

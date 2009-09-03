@@ -5,6 +5,7 @@ class SurveyConnection {
     
     SurveyStation fromStation;
     SurveyStation toStation;
+    static belongsTo =  [survey: Survey]
     double length;
     double compass;
     double clino;
