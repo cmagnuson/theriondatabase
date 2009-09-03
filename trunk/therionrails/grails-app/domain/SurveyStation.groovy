@@ -10,6 +10,6 @@ class SurveyStation {
     
     
     public String toString(){
-    	name
+    	survey.title+" : "+name
     }
 }
