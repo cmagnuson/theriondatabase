@@ -57,13 +57,6 @@
                             
                         </tr>
                     
-                        <tr class="prop">
-                            <td valign="top" class="name">Units:</td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean:measurementMethodInstance, field:'units')}</td>
-                            
-                        </tr>
-                    
                     </tbody>
                 </table>
             </div>

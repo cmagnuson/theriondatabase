@@ -65,15 +65,6 @@
                                 </td>
                             </tr> 
                         
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="units">Units:</label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean:measurementMethodInstance,field:'units','errors')}">
-                                    <input type="text" id="units" name="units" value="${fieldValue(bean:measurementMethodInstance,field:'units')}"/>
-                                </td>
-                            </tr> 
-                        
                         </tbody>
                     </table>
                 </div>

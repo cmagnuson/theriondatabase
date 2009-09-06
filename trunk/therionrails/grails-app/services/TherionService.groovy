@@ -3,8 +3,11 @@ import java.text.SimpleDateFormat;
 import org.springframework.beans.factory.InitializingBean
 import org.codehaus.groovy.grails.commons.ApplicationHolder 
 
-class TherionService implements InitializingBean
+class TherionService implements InitializingBean 
 {
+
+	public static final Double FEET_TO_METERS =  0.3048;
+
 	def grailsApplication
 	def setting
 	def servletContext
@@ -20,6 +23,8 @@ class TherionService implements InitializingBean
 	}
 
 	def void exportSurvey(){
+		checkDirectories()
+		
 		createThconfig()
 		createLayout()
 		createMain()
@@ -28,22 +33,62 @@ class TherionService implements InitializingBean
 
 		compile()
 	}
+	
+	def void importSurvey(surveyInstance,rawData){
+		String[] lines = rawData.split("\n")
+		HashMap stations = new HashMap();
+		for(String line: lines){
+			line = line.trim();
+			if(line.startsWith("#") || line.size()==0){
+				continue;
+			}
+			String[] parts = line.split("\\s+")
 
-	def void processInTherion(){
+			//add station to unique list of stations if not already in there
+			if(!stations.containsKey(parts[0])){
+				def ss = new SurveyStation(survey:surveyInstance, name:parts[0], note:"", timeMeasured:new Date())
+				ss.save()
+				stations.put(parts[0], ss)
+			}
+			if(!stations.containsKey(parts[1])){
+				def ss = new SurveyStation(survey:surveyInstance, name:parts[1], note:"", timeMeasured:new Date())
+				ss.save();
+				stations.put(parts[1], ss)
+			}
 
+			def connection = new SurveyConnection(survey:surveyInstance, fromStation:stations.get(parts[0]), toStation:stations.get(parts[1]), length:Double.valueOf(parts[2])*FEET_TO_METERS,
+					compass:parts[3], clino:parts[4],
+					left:Double.valueOf(parts[5])*FEET_TO_METERS, right:Double.valueOf(parts[6])*FEET_TO_METERS, up:Double.valueOf(parts[7])*FEET_TO_METERS, down:Double.valueOf(parts[8])*FEET_TO_METERS)
+			connection.save()
+		}
 
 	}
+	
+	
+	def void checkDirectories(){
+		(new File(PATH)).mkdirs()
+		(new File(PATH+"levels/")).mkdirs()
+		(new File(PATH+OUTPUT_PATH)).mkdirs()		
+	}
 
-	private void compile(){
+
+	def void compile(){
 		ProcessBuilder pb = new ProcessBuilder("therion");
 		pb.directory(new File(PATH));
 		Process p = pb.start();
 		BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		String input = "";
+		String compileOutput = "";
 		while((input=br.readLine())!=null){
-			log.error input
+			log.debug input
+			compileOutput+=input+"\n"
 		}
 		p.waitFor();
+
+		if(p.exitValue()!=0){
+			log.error "Compile failed, exit value: "+p.exitValue();
+			throw new CompileException(compileOutput);
+		}
 	}
 
 	private void createSurveys(){
@@ -68,12 +113,18 @@ class TherionService implements InitializingBean
 					output+="# "+ss.name+" - "+ss.note+"\n";
 				}
 			}
+			
+			for(FixedPoint fp: FixedPoint.list()){
+				if(fp.station.survey.id==s.id){
+					output+=fp.toTherionString()
+				}
+			}
 
 			output+="\n sd length .05 meter        \n" + 
 			"  sd compass .5 degrees\n" + 
 			"  sd clino .5 degree  \n" + 
-			"  data normal from to length compass clino left right up down\n";
-
+			"  data normal from to length compass clino left right up down\n\n";
+			
 			for(SurveyConnection sc: s.surveyConnections){
 				output+=sc.fromStation.name+" "+sc.toStation.name+" "+sc.length+" "+sc.compass+" "+sc.clino+" "+sc.left+" "+sc.right+" "+sc.up+" "+sc.down+"\n";
 			}
@@ -81,7 +132,7 @@ class TherionService implements InitializingBean
 			"   endcenterline\n" + 
 			" \n" + 
 			" endsurvey\n";
-			File f = new File(PATH+"levels/"+s.system.name+"-"+s.id+".th");
+			File f = new File(PATH+"levels/"+s.system.name+"-"+s.id+".th")
 			f.setText(output);
 		}
 	}
@@ -116,7 +167,7 @@ class TherionService implements InitializingBean
 		
 		level+="\nendsurvey\n";
 
-		File f = new File(PATH+"levels/levels.th");
+		File f = new File(PATH+"levels/levels.th")
 		f.setText(level);
 
 		for(TunnelSystem ts: TunnelSystem.list()){
@@ -132,7 +183,7 @@ class TherionService implements InitializingBean
 			output+= "\n"; 			
 			output+= " endsurvey\n" + 
 			"\n";
-			f = new File(PATH+"levels/"+ts.name+".th");
+			f = new File(PATH+"levels/"+ts.name+".th")
 			f.setText(output);
 		}
 	}
@@ -145,7 +196,7 @@ class TherionService implements InitializingBean
 		"   input levels/levels\n" + 
 		"   \n" + 
 		" endsurvey\n";
-		File f = new File(PATH+"main.th");
+		File f = new File(PATH+"main.th")
 		f.setText(main);   
 	}
 
@@ -192,7 +243,7 @@ class TherionService implements InitializingBean
 		"enddef; \n" + 
 		"endcode \n" +
 		"endlayout \n"
-		File f = new File(PATH+"layout.th");
+		File f = new File(PATH+"layout.th")
 		f.setText(layout);
 	}
 
@@ -225,7 +276,19 @@ class TherionService implements InitializingBean
 		"  grid-size 1 1 1 m\n" + 
 		"endlayout\n" + 
 		"export map -fmt xvi -layout xvi-export -o "+OUTPUT_PATH+"cave.xvi\n";
-		File f = new File(PATH+"thconfig");
+		File f = new File(PATH+"thconfig")
 		f.setText(config); 
 	}
+}
+
+class CompileException extends Exception{
+	
+	public CompileException(){
+		super();
+	}
+	
+	public CompileException(String text){
+		super(text);
+	}
+	
 }

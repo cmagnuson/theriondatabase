@@ -31,8 +31,6 @@
                         
                    	        <g:sortableColumn property="sd_z" title="Sdz" />
                         
-                   	        <g:sortableColumn property="units" title="Units" />
-                        
                         </tr>
                     </thead>
                     <tbody>
@@ -48,8 +46,6 @@
                             <td>${fieldValue(bean:measurementMethodInstance, field:'sd_y')}</td>
                         
                             <td>${fieldValue(bean:measurementMethodInstance, field:'sd_z')}</td>
-                        
-                            <td>${fieldValue(bean:measurementMethodInstance, field:'units')}</td>
                         
                         </tr>
                     </g:each>
