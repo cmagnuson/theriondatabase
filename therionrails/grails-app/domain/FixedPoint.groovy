@@ -16,4 +16,9 @@ class FixedPoint {
     public String toString(){
     	station.survey.toString()+station.toString()
     }
+    
+    def toTherionString(){
+    	MeasurementMethod mm = measurementMethod;
+    	return "fix "+station.name+" "+x+" "+y+" "+z+" "+mm.sd_x+" "+mm.sd_y+" "+mm.sd_z+" #"+note+"\n";
+    }
 }
