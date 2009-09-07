@@ -1,3 +1,5 @@
+import org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration
+
 dataSource {
 	pooled = true
 	driverClassName = "org.hsqldb.jdbcDriver"
@@ -19,14 +21,20 @@ environments {
 	}
 	test {
 		dataSource {
-			dbCreate = "update"
-			url = "jdbc:hsqldb:file:testDb;shutdown=true"
+			dbCreate = "create-drop"
+			url = "jdbc:hsqldb:mem:testDb;shutdown=true"
 		}
 	}
 	production {
 		dataSource {
-			dbCreate = "update"
-			url = "jdbc:hsqldb:file:prodDb;shutdown=true"
+			configClass = GrailsAnnotationConfiguration.class
+		 	pooling = true  
+         	driverClassName = "com.mysql.jdbc.Driver"  
+         	dbCreate = "update"  
+         	url = "jdbc:mysql://localhost:3306/therion"  
+         	username = "root"  
+         	password = ""  
+			dialect = "org.hibernate.dialect.MySQLInnoDBDialect"			
 		}
 	}
 }

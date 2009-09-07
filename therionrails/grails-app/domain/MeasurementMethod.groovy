@@ -7,7 +7,6 @@ class MeasurementMethod {
 	double sd_x;
 	double sd_y;
 	double sd_z;
-	//String units;
 	
 	public String toString(){
 		name
