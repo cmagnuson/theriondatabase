@@ -34,7 +34,7 @@ class TherionService implements InitializingBean
 		compile()
 	}
 	
-	def void importSurvey(surveyInstance,rawData){
+	def void importSurvey(Survey surveyInstance, String rawData){
 		String[] lines = rawData.split("\n")
 		HashMap stations = new HashMap();
 		for(String line: lines){
@@ -43,7 +43,7 @@ class TherionService implements InitializingBean
 				continue;
 			}
 			String[] parts = line.split("\\s+")
-
+			
 			//add station to unique list of stations if not already in there
 			if(!stations.containsKey(parts[0])){
 				def ss = new SurveyStation(survey:surveyInstance, name:parts[0], note:"", timeMeasured:new Date())

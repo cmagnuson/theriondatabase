@@ -3,6 +3,11 @@ class SurveyConnection {
     static constraints = {
     }
     
+    static mapping = {
+    	left column: 'leftDist'
+    	right column: 'rightDist'
+    }
+    
     SurveyStation fromStation;
     SurveyStation toStation;
     static belongsTo =  [survey: Survey]
