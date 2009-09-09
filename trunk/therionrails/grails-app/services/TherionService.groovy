@@ -340,8 +340,13 @@ class TherionService implements InitializingBean
 			layout+=f.metapostCode+"\n";
 		}
 
-		layout+="endlayout \n"
-			File f = new File(PATH+"layout.th")
+		layout+="endlayout \n";
+		
+		for(Feature f: Feature.list()){
+			layout+=f.postMetapostCode+"\n";
+		}
+			
+		File f = new File(PATH+"layout.th")
 		f.setText(layout);
 	}
 

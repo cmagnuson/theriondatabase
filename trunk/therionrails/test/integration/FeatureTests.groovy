@@ -9,9 +9,13 @@ class FeatureTests extends GrailsUnitTestCase {
         super.tearDown()
     }
 
-    void testSomething() {
+    void testMakeFeature() {
 		Feature f = new Feature(name:"Test", metapostCode:"test mp code", evalScrapString: "def evalScrap(Object fi){return \"hello\"+fi.rotation;}");
 		FeatureInstance fi = new FeatureInstance(rotation:139);
 		assertEquals(f.generateScrapString(fi),"hello139")
+    }
+    
+    void testBootstrappedFeatures(){
+    	assert FeatureInstance.list().size()
     }
 }

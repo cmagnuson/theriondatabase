@@ -6,19 +6,75 @@ class BootStrap {
 
 	def init = { servletContext ->   
 
-	def continuation = new Feature(name: "Continuation", metapostCode:"", evalScrapString: 
+	def continuation = new Feature(name: "Continuation", metapostCode:"", postMetapostCode:"", evalScrapString: 
 		"def evalScrap(Object fi){" +
 		" return \"point \"+fi.surveyStation.scrapX+\" \"+fi.surveyStation.scrapY+\" continuation\";" +
 	"}")
 	continuation.save()
 
+	def manhole = new Feature(name: "Manhole", metapostCode:"code metapost\n" +
+				"def p_u_manhole (expr pos,theta,sc,al)=\n" + 
+				"    U:=(.4u,.4u);\n" + 
+				"    T:=identity aligned al rotated theta scaled sc shifted pos;\n" + 
+				"    pickup PenA;\n" + 
+				"    p := fullcircle scaled 1u; \n" + 
+				"    thdraw p;\n" + 
+				"enddef;\n" +
+				"     initsymbol(\"p_u_manhole\");\n" + 
+				" endcode\n",
+				postMetapostCode: "text en \"point u:manhole\" \"manhole\" \n",
+				evalScrapString:
+					"def evalScrap(Object fi){" +
+					" return \"point \"+fi.surveyStation.scrapX+\" \"+fi.surveyStation.scrapY+\" u:manhole  -orientation \"+fi.rotation+\" -place top\";" +
+				"}")
+	manhole.save()
+	
+	def interconnect = new Feature(name: "Interconnect", metapostCode:" code metapost\n" + 
+				"     def p_u_interconnect (expr P,R,S,A)=\n" + 
+				"       T:=identity aligned A rotated R scaled S shifted P;\n" + 
+				"       thfill (.5u,.5u)--(-.5u,.5u)--(-.3u,.3u)--(.3u,.3u)--cycle;\n" + 
+				"       thfill (.5u,-.5u)--(-.5u,-.5u)--(-.3u,-.3u)--(.3u,-.3u)--cycle;\n" + 
+				"       thfill (.5u,.5u)--(.5u,-.5u)--(.3u,-.3u)--(.3u,.3u)--cycle;\n" + 
+				"       thfill (-.5u,.5u)--(-.5u,-.5u)--(-.3u,-.3u)--(-.3u,.3u)--cycle;       \n" + 
+				"     enddef;\n" + 
+				"     initsymbol(\"p_u_interconnect\");\n" + 
+				"\n" + 
+				"   endcode\n",
+				postMetapostCode:"text en \"point u:interconnect\" \"interconnect\" \n",
+				evalScrapString:
+					"def evalScrap(Object fi){" +
+					" return \"point \"+fi.surveyStation.scrapX+\" \"+fi.surveyStation.scrapY+\" u:interconnect  -orientation \"+fi.rotation+\" -place top\";" +
+				"}")
+	interconnect.save()
+
+	def cbWall = new Feature(name: "Cinderblock Wall", metapostCode: "\n code metapost\n" + 
+		"     def p_u_cinderblock (expr P,R,S,A)=\n" + 
+		"       U:=(.6u,.6u);  \n" + 
+		"       T:=identity aligned A rotated R scaled S shifted P;\n" + 
+		"       pickup PenA;\n" + 
+		"       thdraw (.3u,.3u)--(.3u,-.01u)--(-.3u,-.01u)--(-.3u,.3u)--cycle;\n" + 
+		"       thdraw (.9u,.3u)--(.9u,-.01u)--(.3u,-.01u)--(.3u,.3u)--cycle;\n" + 
+		"       thdraw (-.9u,.3u)--(-.9u,-.01u)--(-.3u,-.01u)--(-.3u,.3u)--cycle;\n" + 
+		"          enddef;\n" + 
+		"     initsymbol(\"p_u_cinderblock\");\n" + 
+		"\n" + 
+		"   endcode\n",
+		postMetapostCode:"text en \"point u:cinderblock\" \"Cinderblock Wall\" \n",
+		evalScrapString:
+			"def evalScrap(Object fi){" +
+			" return \"point \"+fi.surveyStation.scrapX+\" \"+fi.surveyStation.scrapY+\" u:cinderblock  -orientation \"+fi.rotation+\" -place top\";" +
+		"}")
+	cbWall.save()
+					
+	
 	switch(GrailsUtil.environment) { 
 	case "development": 
+		initData()
 		break 
 	case "test": 
 		//def ctx = servletContext.getAttribute(GrailsApplicationAttributes.APPLICATION_CONTEXT)
 		//def therionService =  ctx.getBean("therionService")
-		initTest()
+		initData()
 		break 
 	case "production": 
 		break 
@@ -28,7 +84,7 @@ class BootStrap {
 	def destroy = {
 	}
 
-	def initTest(){
+	def initData(){
 
 		def sysa = new TunnelSystem(color: "Red", name: "sysa");
 		sysa.save();
@@ -177,7 +233,7 @@ class BootStrap {
 				"      106 12.4  .8   90  0  0 0 0 0\n" + 
 				"      106  115   1.2   0 -90  0 0 0 0\n" + 
 				"      115  116    3.7  0 0   .425 .425 2.1 0\n" + 
-				"      116  117    .6    0 90  0 0 0 0  #this is hole to NSP Cedar\n" + 
+				"      116  117    .6    0 90  0 0 0 0  #this is hole to Cedar\n" + 
 				"      105  107  13.4    180     0     .425 .425 2.1 0\n" + 
 				"      107  107.1 1.4  0  90   .3 .3 .3 .3\n" + 
 				"      107  108  7.9    180     0     .425 .425 2.1 0\n" + 
@@ -222,11 +278,22 @@ class BootStrap {
 		def st1 = SurveyStation.findBySurveyAndName(sura, "68.1")
 		def sc1 = SurveyConnection.findByToStation(st1)
 
-		def fi = new FeatureInstance(feature:Feature.findByName("Continuation"), surveyConnection: sc1, surveyStation: st1);
+		def fi = new FeatureInstance(feature:Feature.findByName("Manhole"), surveyConnection: sc1, surveyStation: st1);
 		fi.save();
 
+		def st2 = SurveyStation.findBySurveyAndName(sura, "0")
+		def sc2 = SurveyConnection.findByFromStation(st2)
+		def fi2 = new FeatureInstance(feature:Feature.findByName("Interconnect"), surveyConnection: sc2, surveyStation: st2)
+		fi2.save();
+		
+		def fi3 = new FeatureInstance(feature:Feature.findByName("Cinderblock Wall"),
+				surveyStation: SurveyStation.findBySurveyAndName(sura, "117"))
+		fi3.save()
 	}
 
+	
+	
+	
 	public void importSurvey(Survey surveyInstance, String rawData){
 		Double FEET_TO_METERS =  0.3048;
 
