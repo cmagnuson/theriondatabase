@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import org.springframework.beans.factory.InitializingBean
 import org.codehaus.groovy.grails.commons.ApplicationHolder 
@@ -24,6 +25,9 @@ class TherionService implements InitializingBean
 
 	def void exportSurvey(){
 		checkDirectories()
+
+		assignAllSurveyCords()
+		createScraps()
 		
 		createThconfig()
 		createLayout()
@@ -33,7 +37,54 @@ class TherionService implements InitializingBean
 
 		compile()
 	}
-	
+
+	def String getSurveyXvi(Survey s){
+		checkDirectories()
+
+		saveSurvey(s, PATH+"singlesurvey.th")
+		createSingleThconfig()		
+
+		compile()
+
+		//read xvi file from disk
+		File f = new File(PATH+OUTPUT_PATH+"singlesurvey.xvi");
+		return f.getText();
+	}
+
+	def void assignAllSurveyCords(){
+		for(Survey s: Survey.list()){
+			assignSurveyCords(s);
+		}
+	}
+
+	def void assignSurveyCords(Survey s){
+		String xvi = getSurveyXvi(s);
+		xvi = xvi.split("set XVIshots")[0];
+
+		for(String line: xvi.split("\n")){
+			line = line.trim();
+			if(!line.startsWith("{")){
+				continue;
+			}
+			line = line.replaceAll("\\{", "");
+			line = line.replaceAll("\\}", "");
+			line = line.trim();
+
+			String[] parts = line.split("\\s+")
+			if(parts==null || parts.length!=3)
+				continue;
+
+			double x = Double.valueOf(parts[0]);
+			double y = Double.valueOf(parts[1]);
+			String station = parts[2];
+
+			SurveyStation ss = SurveyStation.findBySurveyAndName(s, station);
+			ss.scrapX = x;
+			ss.scrapY = y;
+			ss.save();
+		}
+	}
+
 	def void importSurvey(Survey surveyInstance, String rawData){
 		String[] lines = rawData.split("\n")
 		HashMap stations = new HashMap();
@@ -43,7 +94,7 @@ class TherionService implements InitializingBean
 				continue;
 			}
 			String[] parts = line.split("\\s+")
-			
+
 			//add station to unique list of stations if not already in there
 			if(!stations.containsKey(parts[0])){
 				def ss = new SurveyStation(survey:surveyInstance, name:parts[0], note:"", timeMeasured:new Date())
@@ -63,8 +114,8 @@ class TherionService implements InitializingBean
 		}
 
 	}
-	
-	
+
+
 	def void checkDirectories(){
 		(new File(PATH)).mkdirs()
 		(new File(PATH+"levels/")).mkdirs()
@@ -91,50 +142,83 @@ class TherionService implements InitializingBean
 		}
 	}
 
+	private void createScraps(){
+		for(Survey s: Survey.list()){
+			createScrap(s, PATH+"levels/"+s.system.name+"-"+s.id+".th2")
+		}
+	}
+
+	private void createScrap(Survey s, String filename){
+		String output = "encoding  utf-8\n" + 
+		" \n";
+		output+="scrap "+s.system.name+"-"+s.id+"-th2\n\n"
+
+		for(SurveyStation ss: s.surveyStations){
+			output+="point "+ss.scrapX+" "+ss.scrapY+" station -name "+ss.name+"@"+s.system.name+"-"+s.id+"\n";
+		}
+
+		output+="\n";
+
+		for(SurveyStation ss: s.surveyStations){
+			for(FeatureInstance fi: FeatureInstance.findAllBySurveyStation(ss)){
+				output+=fi.generateScrapString()+"\n";
+			}
+		}
+
+		output+="endscrap\n";
+
+		File f = new File(filename);
+		f.setText(output);
+	}
+
 	private void createSurveys(){
 		for(Survey s: Survey.list()){
-
-			SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd@hh:mm:ss.00");
-			
-			String output = "encoding  utf-8\n" + 
-			" \n";
-			output+=" survey "+s.system.name+"-"+s.id+"  \\\n";
-			output+="   -title \""+s.title+"\" \\\n\n";
-			output+="   centerline\n" + 
-			" units length 1 meter\n" + 
-			"     team \""+s.team+"\"\n"+ 
-			"     date "+format.format(s.datesurveyed)+"\n" + 
-			"     walls on\n" + 
-			"     cs UTM15\n\n" +
-			"# "+s.note+"\n";
-
-			for(SurveyStation ss: s.surveyStations){
-				if(ss.note!=null && ss.note.trim().size()>0){
-					output+="# "+ss.name+" - "+ss.note+"\n";
-				}
-			}
-			
-			for(FixedPoint fp: FixedPoint.list()){
-				if(fp.station.survey.id==s.id){
-					output+=fp.toTherionString()
-				}
-			}
-
-			output+="\n sd length .05 meter        \n" + 
-			"  sd compass .5 degrees\n" + 
-			"  sd clino .5 degree  \n" + 
-			"  data normal from to length compass clino left right up down\n\n";
-			
-			for(SurveyConnection sc: s.surveyConnections){
-				output+=sc.fromStation.name+" "+sc.toStation.name+" "+sc.length+" "+sc.compass+" "+sc.clino+" "+sc.left+" "+sc.right+" "+sc.up+" "+sc.down+"\n";
-			}
-			output+="      \n" + 
-			"   endcenterline\n" + 
-			" \n" + 
-			" endsurvey\n";
-			File f = new File(PATH+"levels/"+s.system.name+"-"+s.id+".th")
-			f.setText(output);
+			saveSurvey(s, PATH+"levels/"+s.system.name+"-"+s.id+".th")
 		}
+	}
+
+	def saveSurvey(Survey s, String filename){
+
+		SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd@hh:mm:ss.00");
+
+		String output = "encoding  utf-8\n" + 
+		" \n";
+		output+=" survey "+s.system.name+"-"+s.id+"  \\\n";
+		output+="   -title \""+s.title+"\" \\\n\n";
+		output+="   centerline\n" + 
+		" units length 1 meter\n" + 
+		"     team \""+s.team+"\"\n"+ 
+		"     date "+format.format(s.datesurveyed)+"\n" + 
+		"     walls on\n" + 
+		"     cs UTM15\n\n" +
+		"# "+s.note+"\n";
+
+		for(SurveyStation ss: s.surveyStations){
+			if(ss.note!=null && ss.note.trim().size()>0){
+				output+="# "+ss.name+" - "+ss.note+"\n";
+			}
+		}
+
+		for(FixedPoint fp: FixedPoint.list()){
+			if(fp.station.survey.id==s.id){
+				output+=fp.toTherionString()
+			}
+		}
+
+		output+="\n sd length .05 meter        \n" + 
+		"  sd compass .5 degrees\n" + 
+		"  sd clino .5 degree  \n" + 
+		"  data normal from to length compass clino left right up down\n\n";
+
+		for(SurveyConnection sc: s.surveyConnections){
+			output+=sc.fromStation.name+" "+sc.toStation.name+" "+sc.length+" "+sc.compass+" "+sc.clino+" "+sc.left+" "+sc.right+" "+sc.up+" "+sc.down+"\n";
+		}
+		output+="      \n" + 
+		"   endcenterline\n" + 
+		" \n" + 
+		" endsurvey\n";
+		File f = new File(filename)
+		f.setText(output);
 	}
 
 	private void createLevels(){
@@ -146,7 +230,7 @@ class TherionService implements InitializingBean
 			level+="input "+ts.name+".th\n";
 		}
 		level+="\n";
-		
+
 		for(Equate e: Equate.list()){
 			if(e.stations==null || e.stations.size()<2){
 				continue;
@@ -164,7 +248,7 @@ class TherionService implements InitializingBean
 				}
 			}
 		}
-		
+
 		level+="\nendsurvey\n";
 
 		File f = new File(PATH+"levels/levels.th")
@@ -179,7 +263,15 @@ class TherionService implements InitializingBean
 			"   \n";
 			for(Survey s: ts.surveys){
 				output+="input "+ts.name+"-"+s.id+"\n";
+				output+="input "+ts.name+"-"+s.id+".th2\n";
 			}
+			output+="\n"
+			output+="map "+ts.name+"-map\n"
+			for(Survey s: ts.surveys){
+				output+=ts.name+"-"+s.id+"-th2\n"
+			}
+			output+="endmap\n"
+			
 			output+= "\n"; 			
 			output+= " endsurvey\n" + 
 			"\n";
@@ -241,9 +333,15 @@ class TherionService implements InitializingBean
 		"pop_label_fill_color; \n" + 
 		"fi; \n" + 
 		"enddef; \n" + 
-		"endcode \n" +
-		"endlayout \n"
-		File f = new File(PATH+"layout.th")
+		"endcode \n";
+
+		for(Feature f: Feature.list()){
+			layout+="#"+f.name+"\n";
+			layout+=f.metapostCode+"\n";
+		}
+
+		layout+="endlayout \n"
+			File f = new File(PATH+"layout.th")
 		f.setText(layout);
 	}
 
@@ -253,13 +351,6 @@ class TherionService implements InitializingBean
 		"input layout.th \n" + 
 		"source main.th \n" + 
 		"\n" + 
-		"#source          # additional source data \n" + 
-		"#map all_map projection plan    # map that contains centerline and scrap map \n" + 
-		"# #                 note@Main     # notes\n" + 
-		"#      Main             # survey centerline data below scraps \n" + 
-		"#endmap          # end of map \n" + 
-		"#endsource       # end of additional source data \n" + 
-		"select all_map  # select this all_map for output \n" + 
 		"export model -format esri -o "+OUTPUT_PATH+"esri\n" + 
 		"export model -format kml -o "+OUTPUT_PATH+"cave.kml\n" + 
 		"export model -format dxf -o "+OUTPUT_PATH+"cave.dxf\n" + 
@@ -279,16 +370,31 @@ class TherionService implements InitializingBean
 		File f = new File(PATH+"thconfig")
 		f.setText(config); 
 	}
+
+	private void createSingleThconfig(){
+		String config = "encoding  utf-8\n" + 
+		"\n" + 
+		"source singlesurvey.th \n" + 
+		//"layout xvi-export\n" + 
+		//"  scale 1 100\n" + 
+		//"  grid-size 1 1 1 m\n" + 
+		//"endlayout\n" + 
+		//-layout xvi-export
+		"export map -fmt xvi -o "+OUTPUT_PATH+"singlesurvey.xvi\n";
+		File f = new File(PATH+"thconfig")
+		f.setText(config); 
+	}
+
 }
 
 class CompileException extends Exception{
-	
+
 	public CompileException(){
 		super();
 	}
-	
+
 	public CompileException(String text){
 		super(text);
 	}
-	
+
 }

@@ -2,8 +2,8 @@ class FeatureInstance {
 
     static constraints = {
     	feature(nullable:false)
-    	rotation(min:-360, max:360, nullable:false)
-    	centerOffset(nullable:false)
+    	rotation(min:-360, max:360, nullable:true)
+    	centerOffset(nullable:true)
     	surveyConnection(nullable:false) //required to make it easier to do things for station (if we know the direction...)
     	surveyStation(nullable:true)    //if this is true, we are operating on a connection, if not then on a station
     }
@@ -14,5 +14,9 @@ class FeatureInstance {
     int rotation = 0;
     double centerOffset = 0;
     def attributes = [:];
+    
+    def generateScrapString(){
+		return feature.generateScrapString(this)
+   	}	
     
 }
