@@ -1,6 +1,8 @@
 class TunnelSystem {
 
     static constraints = {
+    	name()
+    	color()
     }
     
     String name

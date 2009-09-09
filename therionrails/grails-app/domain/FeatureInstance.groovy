@@ -4,7 +4,7 @@ class FeatureInstance {
     	feature(nullable:false)
     	rotation(min:-360, max:360, nullable:true)
     	centerOffset(nullable:true)
-    	surveyConnection(nullable:false) //required to make it easier to do things for station (if we know the direction...)
+    	surveyConnection(nullable:true) //...was... required to make it easier to do things for station (if we know the direction...)
     	surveyStation(nullable:true)    //if this is true, we are operating on a connection, if not then on a station
     }
     
@@ -18,5 +18,9 @@ class FeatureInstance {
     def generateScrapString(){
 		return feature.generateScrapString(this)
    	}	
+    
+    public String toString(){
+    	return feature.toString()+"  SS:"+surveyStation+" SC:"+surveyConnection;
+    }
     
 }

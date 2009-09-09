@@ -1,13 +1,15 @@
 TODO:
--add features output - tagging for surveystation and surveyconnection, continuations
+-finish adding features, externalize to file?
+-add area/line features...
 -clean up interface, import, export
 -users and privledges - view vs. create/update vs. admin..?
 -integration testing, testing of gsp pages (esp. static scaffolded ones)
--quartz automated map generation
-
+-download page
 
 Done:
+-point features
 -add equates - make work for multiple (2+) matched survey stations
 -add fixed point output
 -integration testing of therion export
 -mysql db for prod
+-quartz automated map generation

@@ -16,7 +16,6 @@ class SurveyExportTests extends GrailsUnitTestCase {
 	}
 
 	void testExport() {
-		assert FeatureInstance.list().size()
 		therionService.exportSurvey()
 	}
 	
