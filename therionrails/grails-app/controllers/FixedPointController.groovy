@@ -83,11 +83,21 @@ class FixedPointController {
     def create = {
         def fixedPointInstance = new FixedPoint()
         fixedPointInstance.properties = params
+	
+		def surveyInstance = SurveyStation.get(params.surveyStation.id)
+		if(surveyInstance){
+			fixedPointInstance.station = surveyInstance;
+		}
         return ['fixedPointInstance':fixedPointInstance]
     }
 
     def save = {
         def fixedPointInstance = new FixedPoint(params)
+        if(FixedPoint.findAllByStation(fixedPointInstance.station).size()>0){
+        	flash.message = "Fixed point for this survey station already exists!"
+        	redirect(action:show, id:FixedPoint.findByStation(fixedPointInstance.station).id)
+        	return;
+        }
         if(!fixedPointInstance.hasErrors() && fixedPointInstance.save()) {
             flash.message = "FixedPoint ${fixedPointInstance.id} created"
             redirect(action:show,id:fixedPointInstance.id)

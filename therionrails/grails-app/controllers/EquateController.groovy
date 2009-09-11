@@ -5,7 +5,7 @@ class EquateController {
     def index = { redirect(action:list,params:params) }
 
     // the delete, save and update actions only accept POST requests
-    static allowedMethods = [delete:'POST', save:'POST', update:'POST']
+    static allowedMethods = [delete:'POST', save:'POST', update:'POST', addSurveyStation:'POST']
 
     def list = {
         params.max = Math.min( params.max ? params.max.toInteger() : 10,  100)
@@ -52,6 +52,17 @@ class EquateController {
             return [ equateInstance : equateInstance ]
         }
     }
+
+	def addSurveyStation = {
+		log.error params
+		def surveyStation = SurveyStation.get(Long.valueOf(params['surveyStation'].id))
+		def equate = Equate.get(Long.valueOf(params['equate'].id))
+		
+		equate.stations.add(surveyStation)
+		equate.save()
+		
+		redirect(action:show, id:equate.id)
+	}
 
     def update = {
         def equateInstance = Equate.get( params.id )

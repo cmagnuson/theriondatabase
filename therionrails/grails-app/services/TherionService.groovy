@@ -365,7 +365,8 @@ class TherionService implements InitializingBean
 		"#export map  -projection plan -o "+OUTPUT_PATH+"cave_m.pdf \n" + 
 		"export continuation-list -o "+OUTPUT_PATH+"continuation.txt\n" + 
 		"#export atlas -projection plan -o "+OUTPUT_PATH+"cave_a.pdf\n" + 
-		"export map -projection plan -layout lab-header -output "+OUTPUT_PATH+"cave.pdf\n" + 
+		"export map -projection plan -layout lab-header -output "+OUTPUT_PATH+"cave.pdf\n" +
+		"export map -projection plan -format svg -layout lab-header -output "+OUTPUT_PATH+"cave.svg\n" +
 		"\n" + 
 		"layout xvi-export\n" + 
 		"  scale 1 100\n" + 

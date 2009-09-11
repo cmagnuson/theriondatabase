@@ -56,6 +56,19 @@
                             <td valign="top" class="value">${fieldValue(bean:surveyStationInstance, field:'timeMeasured')}</td>
                             
                         </tr>
+                   
+                          <tr class="prop">
+                            <td valign="top" class="name">Features:</td>
+                            
+                            <td  valign="top" style="text-align:left;" class="value">
+                                <ul>
+                                <g:each var="f" in="${FeatureInstance.findAllBySurveyStation(surveyStationInstance)}">
+                                    <li><g:link controller="featureInstance" action="show" id="${f.id}">${f?.feature?.encodeAsHTML()}</g:link></li>
+                                </g:each>
+                                </ul>
+                            </td>
+                            
+                        </tr>
                     
                     </tbody>
                 </table>
@@ -65,6 +78,20 @@
                     <input type="hidden" name="id" value="${surveyStationInstance?.id}" />
                     <span class="button"><g:actionSubmit class="edit" value="Edit" /></span>
                     <span class="button"><g:actionSubmit class="delete" onclick="return confirm('Are you sure?');" value="Delete" /></span>
+                    </g:form>
+                    <g:form controller="equate">
+                    <input type="hidden" name="surveyStation.id" value="${surveyStationInstance?.id}" />
+                    <g:select name="equate.id" from="${Equate.list()}" optionKey="id"/>
+                    <span class="button"><g:actionSubmit class="edit" action="addSurveyStation" value="Add Equate" /></span>
+                </g:form>
+                <g:form controller="fixedPoint">
+                    <input type="hidden" name="surveyStation.id" value="${surveyStationInstance?.id}" />
+                    <span class="button"><g:actionSubmit class="edit" action="create" value="Add Fixed Point" /></span>
+                </g:form>
+                <g:form controller="featureInstance">
+                    <input type="hidden" name="surveyStation.id" value="${surveyStationInstance?.id}" />
+                    <g:select name="featureInstance.id" from="${Feature.list()}" optionKey="id"/>
+                    <span class="button"><g:actionSubmit class="edit" action="create" value="Add Feature" /></span>
                 </g:form>
             </div>
         </div>

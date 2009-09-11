@@ -1,5 +1,11 @@
 class Feature {
 
+	static mapping = {
+		metapostCode type:"text" 
+		postMetapostCode type:"text" 
+		evalScrapString type:"text" 
+	}
+
     static constraints = {
      name()
      metapostCode()
