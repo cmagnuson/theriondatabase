@@ -7,10 +7,7 @@
         <g:javascript library="application" />				
     </head>
     <body>
-        <div id="spinner" class="spinner" style="display:none;">
-            <img src="${resource(dir:'images',file:'spinner.gif')}" alt="Spinner" />
-        </div>	
-        <div class="logo"><img src="${resource(dir:'images',file:'grails_logo.jpg')}" alt="Grails" /></div>
+        <g:render template="/common/topbar" />
         <g:layoutBody />		
     </body>	
 </html>

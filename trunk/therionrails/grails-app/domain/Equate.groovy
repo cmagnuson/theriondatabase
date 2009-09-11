@@ -8,6 +8,7 @@ class Equate {
 
 	public String toString(){
 		String ret = "";
+		ret+=note+": ";
 		if(stations==null || stations.size()==0){
 			return "No Stations";
 		}

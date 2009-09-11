@@ -7,6 +7,10 @@ class SurveyConnectionController {
     // the delete, save and update actions only accept POST requests
     static allowedMethods = [delete:'POST', save:'POST', update:'POST']
 
+	def addEquate = {
+		redirect(action:addSurveyStation, controller:"equateController", params:params)
+	}
+
     def list = {
         params.max = Math.min( params.max ? params.max.toInteger() : 10,  100)
         [ surveyConnectionInstanceList: SurveyConnection.list( params ), surveyConnectionInstanceTotal: SurveyConnection.count() ]

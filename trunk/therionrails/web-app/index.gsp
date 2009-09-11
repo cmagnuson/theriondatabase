@@ -4,6 +4,9 @@
 		<meta name="layout" content="main" />
     </head>
     <body>
+    	<g:link url="${createLinkTo(dir:'generated/output', file:'cave.pdf')}"><image width="50%" height="50%" src="${createLinkTo(dir:'generated/output', file:'cave.svg')}" />
+	</g:link>
+	<br>
         <h1 style="margin-left:20px;">Welcome to Grails</h1>
         <p style="margin-left:20px;width:80%">Congratulations, you have successfully started your first Grails application! At the moment
         this is the default page, feel free to modify it to either redirect to a controller or display whatever
