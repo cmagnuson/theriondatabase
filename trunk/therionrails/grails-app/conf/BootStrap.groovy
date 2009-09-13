@@ -10,8 +10,9 @@ class BootStrap {
 		"def evalScrap(Object fi){" +
 		" return \"point \"+fi.surveyStation.scrapX+\" \"+fi.surveyStation.scrapY+\" continuation\";" +
 	"}")
-	continuation.save()
-
+	if(Feature.findByName("Manhole")==null)
+		continuation.save()
+	
 	def manhole = new Feature(name: "Manhole", metapostCode:"code metapost\n" +
 				"def p_u_manhole (expr pos,theta,sc,al)=\n" + 
 				"    U:=(.4u,.4u);\n" + 
@@ -27,7 +28,8 @@ class BootStrap {
 					"def evalScrap(Object fi){" +
 					" return \"point \"+fi.surveyStation.scrapX+\" \"+fi.surveyStation.scrapY+\" u:manhole  -orientation \"+fi.rotation+\" -place top\";" +
 				"}")
-	manhole.save()
+	if(Feature.findByName("Manhole")==null)
+		manhole.save()
 	
 	def interconnect = new Feature(name: "Interconnect", metapostCode:" code metapost\n" + 
 				"     def p_u_interconnect (expr P,R,S,A)=\n" + 
@@ -45,7 +47,8 @@ class BootStrap {
 					"def evalScrap(Object fi){" +
 					" return \"point \"+fi.surveyStation.scrapX+\" \"+fi.surveyStation.scrapY+\" u:interconnect  -orientation \"+fi.rotation+\" -place top\";" +
 				"}")
-	interconnect.save()
+	if(Feature.findByName("Interconnect")==null)
+		interconnect.save()
 
 	def cbWall = new Feature(name: "Cinderblock Wall", metapostCode: "\n code metapost\n" + 
 		"     def p_u_cinderblock (expr P,R,S,A)=\n" + 
@@ -64,8 +67,30 @@ class BootStrap {
 			"def evalScrap(Object fi){" +
 			" return \"point \"+fi.surveyStation.scrapX+\" \"+fi.surveyStation.scrapY+\" u:cinderblock  -orientation \"+fi.rotation+\" -place top\";" +
 		"}")
-	cbWall.save()
-					
+	
+	if(Feature.findByName("Cinderblock Wall")==null)
+		cbWall.save()
+	
+		
+		def testWall = new Feature(name: "Color Wall", metapostCode: "\n code metapost\n" + 
+		"     def l_u_wall (expr P)=\n" + 
+		"       T:=identity;\n" +
+		"if known ATTR__color: \n" + 
+		"       pickup PenA;\n" + 
+		"draw P withpen PenA withcolor ATTR__color ;\n" +
+		"fi;\n" +
+		"          enddef;\n" + 
+		"     initsymbol(\"l_u_wall\");\n" + 
+		"\n" + 
+		"   endcode\n",
+		postMetapostCode:"text en \"line u:cinderblock\" \"Cinderblock Wall\" \n #symbol-assign line u wall\n",
+		evalScrapString:
+			"def evalScrap(Object fi){" +
+			" return \"point \"+fi.surveyStation.scrapX+\" \"+fi.surveyStation.scrapY+\" u:cinderblock  -orientation \"+fi.rotation+\" -place top\";" +
+		"}")
+	
+	if(Feature.findByName("Color Wall")==null)
+		testWall.save()
 	
 	switch(GrailsUtil.environment) { 
 	case "development": 
@@ -86,9 +111,9 @@ class BootStrap {
 
 	def initData(){
 
-		def sysa = new TunnelSystem(color: "Red", name: "sysa");
+		def sysa = new TunnelSystem(color: "red", name: "sysa");
 		sysa.save();
-		def sysb = new TunnelSystem(color: "Blue", name: "sysb");
+		def sysb = new TunnelSystem(color: "blue", name: "sysb");
 		sysb.save();
 
 		def mm = new MeasurementMethod(name: "GPS", sd_x:5, sd_y:5, sd_z:5);
@@ -295,7 +320,7 @@ class BootStrap {
 	
 	
 	public void importSurvey(Survey surveyInstance, String rawData){
-		Double FEET_TO_METERS =  0.3048;
+		Double FEET_TO_METERS =  1; //import test data in meters
 
 		String[] lines = rawData.split("\n")
 		HashMap stations = new HashMap();

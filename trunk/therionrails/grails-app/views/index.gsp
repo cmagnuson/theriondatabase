@@ -1,10 +1,11 @@
 <html>
     <head>
-        <title>Welcome to Grails</title>
+        <title>Welcome to PMaps</title>
 		<meta name="layout" content="main" />
     </head>
     <body>
-    <center><g:link url="${createLinkTo(dir:'generated/output', file:'cave.pdf')}"><image width="70%" height="70%" src="${createLinkTo(dir:'generated/output', file:'cave.svg')}" />
+    <center><g:link url="${createLinkTo(dir:'generated/output', file:'cave.pdf')}">
+    <img src="${createLinkTo(dir:'generated/output', file:'cave.svg')}"  width="70%" height="70%">
 	</g:link></center>
     </body>
 </html>

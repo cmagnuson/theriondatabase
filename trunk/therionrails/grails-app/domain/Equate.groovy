@@ -10,7 +10,7 @@ class Equate {
 		String ret = "";
 		ret+=note+": ";
 		if(stations==null || stations.size()==0){
-			return "No Stations";
+			return ret+"No Stations";
 		}
 		else{
 			for(SurveyStation s: stations){

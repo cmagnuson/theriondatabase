@@ -22,7 +22,7 @@
                 <g:renderErrors bean="${surveyInstance}" as="list" />
             </div>
             </g:hasErrors>
-            <g:form method="post" >
+            <g:form method="post" enctype="multipart/form-data">
                 <input type="hidden" name="id" value="${surveyInstance?.id}" />
                 <input type="hidden" name="version" value="${surveyInstance?.version}" />
                 <div class="dialog">
@@ -40,6 +40,7 @@
                         </tbody>
                     </table>
                 </div>
+       			Video: <input type="file" name="video" />
                 <div class="buttons">
                     <span class="button"><g:actionSubmit class="save" value="Save" /></span>
                 </div>

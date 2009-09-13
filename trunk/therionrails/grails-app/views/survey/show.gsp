@@ -30,6 +30,14 @@
                             
                         </tr>
                     
+                       
+                       <tr class="prop">
+                            <td valign="top" class="name">Title:</td>
+                            
+                            <td valign="top" class="value">${fieldValue(bean:surveyInstance, field:'title')}</td>
+                            
+                        </tr>
+                        
                         <tr class="prop">
                             <td valign="top" class="name">Dateentered:</td>
                             
@@ -91,13 +99,12 @@
                             
                         </tr>
                     
-                        <tr class="prop">
-                            <td valign="top" class="name">Title:</td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean:surveyInstance, field:'title')}</td>
-                            
-                        </tr>
                     
+                    <tr class="prop">
+                    	<td valign="top" class="name">Video:</td>
+                    	<td valign="top" class="value"><a href="${createLink(controller:'survey', action:'viewVideo', id:surveyInstance.id)}">Show</a></td>
+                    </tr>
+                    	
                     </tbody>
                 </table>
             </div>

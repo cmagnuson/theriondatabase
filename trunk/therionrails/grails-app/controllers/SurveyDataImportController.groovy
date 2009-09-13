@@ -15,7 +15,8 @@ class SurveyDataImportController {
 
 			def surveyInstance = Survey.get( params.id )
 			def rawData = params.data
-
+			def video = params.video
+			
 			if(!rawData || !surveyInstance){
 				redirect(action:importSurveyData)
 			}
@@ -28,6 +29,8 @@ class SurveyDataImportController {
 
 			//also check for double import... would be bad
 
+			surveyInstance.video = video.getBytes();
+			surveyInstance.save()
 			//if works send here   	
 			redirect(controller:"survey", action:"show", params:[id:surveyInstance.id])
 	}
