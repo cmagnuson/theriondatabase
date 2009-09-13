@@ -1,10 +1,11 @@
 TODO:
 -finish adding features, externalize to file?
 -add area/line features...
--clean up interface, import, export
+-sanity checking on import, print out errors
+-way to display therion.log for error compiles, also show it or parse it for loop closure errors
 -users and privledges - view vs. create/update vs. admin..?
--integration testing, testing of gsp pages (esp. static scaffolded ones)
--download page
+-tagging of surveyConnections with start/end time for video purposes, option to import this from text file
+-video cutting to clips for each surveyConnection
 
 Done:
 -point features
@@ -13,3 +14,7 @@ Done:
 -integration testing of therion export
 -mysql db for prod
 -quartz automated map generation
+-download page
+-integration testing
+-clean up interface
+-video import/viewing

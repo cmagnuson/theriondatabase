@@ -28,7 +28,7 @@ class TherionService implements InitializingBean
 
 		assignAllSurveyCords()
 		createScraps()
-		
+
 		createThconfig()
 		createLayout()
 		createMain()
@@ -53,7 +53,9 @@ class TherionService implements InitializingBean
 
 	def void assignAllSurveyCords(){
 		for(Survey s: Survey.list()){
-			assignSurveyCords(s);
+			if(s.surveyConnections.size()>0 && s.surveyStations.size()>0){
+				assignSurveyCords(s);
+			}
 		}
 	}
 
@@ -144,7 +146,9 @@ class TherionService implements InitializingBean
 
 	private void createScraps(){
 		for(Survey s: Survey.list()){
-			createScrap(s, PATH+"levels/"+s.system.name+"-"+s.id+".th2")
+			if(s.surveyConnections.size()>0 && s.surveyStations.size()>0){
+				createScrap(s, PATH+"levels/"+s.system.name+"-"+s.id+".th2")
+			}
 		}
 	}
 
@@ -165,6 +169,76 @@ class TherionService implements InitializingBean
 			}
 		}
 
+		for(SurveyConnection sc: s.surveyConnections){
+
+			SurveyStation lower, upper, right, left;
+			if(sc.toStation.scrapY>sc.fromStation.scrapY){
+				lower = sc.fromStation;
+				upper = sc.toStation;
+			}
+			else{
+				lower = sc.toStation;
+				upper = sc.fromStation;
+			}
+//			if(lower.scrapX>upper.scrapX){
+//			left = upper;
+//			right = lower;
+//			}
+//			else{
+//			left = lower;
+//			right = upper;
+//			}
+
+
+//			boolean fromLeft = sc.fromStation.scrapX<sc.toStation.scrapX;
+
+//			double angle = Math.atan2(upper.scrapY-lower.scrapY, upper.scrapX-lower.scrapX)*180/Math.PI;
+//			double leftAngle = angle-90;
+//			double rightAngle = angle+90;
+
+//			output+="# sc:"+sc.toString()+" l:"+sc.left+" r:"+sc.right+"\n";
+//			output+="line wall\n";
+//			if(fromLeft){
+//			output+=(sc.fromStation.scrapX - sc.left*Math.cos(leftAngle))+" "+(sc.fromStation.scrapY+sc.left*Math.sin(leftAngle))+"\n";
+//			output+=(sc.toStation.scrapX-sc.left*Math.cos(leftAngle))+" "+(sc.toStation.scrapY+sc.left*Math.sin(leftAngle))+"\n";
+//			}
+//			else{
+//			output+=(sc.fromStation.scrapX + sc.left*Math.cos(leftAngle))+" "+(sc.fromStation.scrapY-sc.left*Math.sin(leftAngle))+"\n";
+//			output+=(sc.toStation.scrapX + sc.left*Math.cos(leftAngle))+" "+(sc.toStation.scrapY-sc.left*Math.sin(leftAngle))+"\n";
+//			}
+//			output+="endline\n\n";
+
+//			output+="line wall\n";
+//			if(fromLeft){
+//			output+=(sc.fromStation.scrapX - sc.right*Math.cos(rightAngle))+" "+(sc.fromStation.scrapY+sc.right*Math.sin(rightAngle))+"\n";
+//			output+=(sc.toStation.scrapX-sc.right*Math.cos(rightAngle))+" "+(sc.toStation.scrapY+sc.right*Math.sin(rightAngle))+"\n";
+//			}
+//			else{
+//			output+=(sc.fromStation.scrapX + sc.right*Math.cos(rightAngle))+" "+(sc.fromStation.scrapY-sc.right*Math.sin(rightAngle))+"\n";
+//			output+=(sc.toStation.scrapX + sc.right*Math.cos(rightAngle))+" "+(sc.toStation.scrapY-sc.right*Math.sin(rightAngle))+"\n";
+//			}
+//			output+="endline\n\n";
+			double angle = Math.atan2(sc.fromStation.scrapY-sc.toStation.scrapY, sc.fromStation.scrapX-sc.toStation.scrapX)*180/Math.PI;
+			double leftAngle = angle-90;
+			double rightAngle = angle+90;
+			double scl = sc.length==0 ? 0 : Math.sqrt((sc.fromStation.scrapX-sc.toStation.scrapX)*(sc.fromStation.scrapX-sc.toStation.scrapX)+(sc.fromStation.scrapY-sc.toStation.scrapY)*(sc.fromStation.scrapY-sc.toStation.scrapY))/sc.length
+
+					output+="line u:wall -attr color \""+sc.survey.system.color+"\"\n";
+
+			output+=(sc.fromStation.scrapX+sc.left*Math.cos(leftAngle)*scl)+" "+(sc.fromStation.scrapY+sc.left*Math.sin(leftAngle)*scl)+"\n";
+			output+=(sc.toStation.scrapX+sc.left*Math.cos(leftAngle)*scl)+" "+(sc.toStation.scrapY+sc.left*Math.sin(leftAngle)*scl)+"\n";			
+
+			output+="endline\n";
+
+			output+="line u:wall -attr color \""+sc.survey.system.color+"\"\n";
+
+			output+=(sc.fromStation.scrapX+sc.right*Math.cos(rightAngle)*scl)+" "+(sc.fromStation.scrapY+sc.right*Math.sin(rightAngle)*scl)+"\n";
+			output+=(sc.toStation.scrapX+sc.right*Math.cos(rightAngle)*scl)+" "+(sc.toStation.scrapY+sc.right*Math.sin(rightAngle)*scl)+"\n";			
+
+			output+="endline\n";
+
+		}
+
 		output+="endscrap\n";
 
 		File f = new File(filename);
@@ -173,7 +247,9 @@ class TherionService implements InitializingBean
 
 	private void createSurveys(){
 		for(Survey s: Survey.list()){
-			saveSurvey(s, PATH+"levels/"+s.system.name+"-"+s.id+".th")
+			if(s.surveyConnections.size()>0 && s.surveyStations.size()>0){
+				saveSurvey(s, PATH+"levels/"+s.system.name+"-"+s.id+".th")
+			}
 		}
 	}
 
@@ -262,17 +338,21 @@ class TherionService implements InitializingBean
 			"   -attr "+ts.name+" 1\n" + 
 			"   \n";
 			for(Survey s: ts.surveys){
-				output+="input "+ts.name+"-"+s.id+"\n";
-				output+="input "+ts.name+"-"+s.id+".th2\n";
+				if(s.surveyConnections.size()>0 && s.surveyStations.size()>0){
+					output+="input "+ts.name+"-"+s.id+"\n";
+					output+="input "+ts.name+"-"+s.id+".th2\n";
+				}
 			}
 			output+="\n"
-			output+="map "+ts.name+"-map\n"
-			for(Survey s: ts.surveys){
-				output+=ts.name+"-"+s.id+"-th2\n"
-			}
+				output+="map "+ts.name+"-map\n"
+				for(Survey s: ts.surveys){
+					if(s.surveyConnections.size()>0 && s.surveyStations.size()>0){
+						output+=ts.name+"-"+s.id+"-th2\n"
+					}
+				}
 			output+="endmap\n"
-			
-			output+= "\n"; 			
+
+				output+= "\n"; 			
 			output+= " endsurvey\n" + 
 			"\n";
 			f = new File(PATH+"levels/"+ts.name+".th")
@@ -341,11 +421,11 @@ class TherionService implements InitializingBean
 		}
 
 		layout+="endlayout \n";
-		
+
 		for(Feature f: Feature.list()){
 			layout+=f.postMetapostCode+"\n";
 		}
-			
+
 		File f = new File(PATH+"layout.th")
 		f.setText(layout);
 	}

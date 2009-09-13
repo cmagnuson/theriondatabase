@@ -1,4 +1,6 @@
-class FeatureController {
 
-    def scaffold = true;
+
+class FeatureController {
+    
+    def scaffold = Feature
 }

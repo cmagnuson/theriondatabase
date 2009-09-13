@@ -96,4 +96,13 @@ class SurveyController {
             render(view:'create',model:[surveyInstance:surveyInstance])
         }
     }
+    
+    def viewVideo = {
+
+	  def survey = Survey.get( params.id )
+	  byte[] video = survey.video 
+	  response.contentType = "video/mpeg"
+	  response.outputStream << video
+	}
+	
 }
