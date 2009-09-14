@@ -7,7 +7,7 @@ class SurveyExportTests extends GrailsUnitTestCase {
 	protected void setUp() {
 		super.setUp();
 		therionService = new TherionService();
-		therionService.PATH = "/tmp/generated/source/";
+		therionService.PATH = "web-app/generated/source/";
 		therionService.OUTPUT_PATH = "../output/";
 	}
 
