@@ -42,7 +42,7 @@ class TherionService implements InitializingBean
 		checkDirectories()
 
 		saveSurvey(s, PATH+"singlesurvey.th")
-		createSingleThconfig()		
+		createSingleThconfig(s)		
 
 		compile()
 
@@ -122,6 +122,7 @@ class TherionService implements InitializingBean
 		(new File(PATH)).mkdirs()
 		(new File(PATH+"levels/")).mkdirs()
 		(new File(PATH+OUTPUT_PATH)).mkdirs()		
+		(new File(PATH+OUTPUT_PATH+"indivsurveys/")).mkdirs()
 	}
 
 
@@ -431,7 +432,7 @@ class TherionService implements InitializingBean
 		f.setText(config); 
 	}
 
-	private void createSingleThconfig(){
+	private void createSingleThconfig(Survey s){
 		String config = "encoding  utf-8\n" + 
 		"\n" + 
 		"source singlesurvey.th \n" + 
@@ -440,7 +441,14 @@ class TherionService implements InitializingBean
 		//"  grid-size 1 1 1 m\n" + 
 		//"endlayout\n" + 
 		//-layout xvi-export
-		"export map -fmt xvi -o "+OUTPUT_PATH+"singlesurvey.xvi\n";
+		"layout names\n"+
+		"debug station-names\n"+
+		 " colour map-fg [80 80 80]\n"+
+	        " colour map-bg [70 90 70]\n"+
+		"endlayout\n"+
+		"export map -fmt xvi -output "+OUTPUT_PATH+"singlesurvey.xvi\n"+
+		"export map -layout names -output "+OUTPUT_PATH+"indivsurveys/"+s.id+".pdf\n"+
+		"export map -layout names -format svg -output "+OUTPUT_PATH+"indivsurveys/"+s.id+".svg\n";
 		File f = new File(PATH+"thconfig")
 		f.setText(config); 
 	}
