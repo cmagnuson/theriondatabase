@@ -14,6 +14,7 @@ class TherionService implements InitializingBean
 	def servletContext
 	def PATH
 	def OUTPUT_PATH
+	def exportStart
 
 	void afterPropertiesSet()
 	{
@@ -24,6 +25,8 @@ class TherionService implements InitializingBean
 	}
 
 	def void exportSurvey(){
+		exportStart = System.currentTimeMillis();
+		
 		checkDirectories()
 
 		assignAllSurveyCords()
@@ -141,8 +144,22 @@ class TherionService implements InitializingBean
 
 		if(p.exitValue()!=0){
 			log.error "Compile failed, exit value: "+p.exitValue();
+			LastCompile.status="<font color=\"red\">FAILURE</font>";
+			LastCompile.compileTime = "";
+			LastCompile.loopError = "";
 			throw new CompileException(compileOutput);
 		}
+		
+		LastCompile.status="<font color=\"green\">SUCCESS</font>";
+		File f = new File(PATH+"therion.log");
+		String text = f.getText();
+		String[] lines = text.split("\n");
+		for(String line: lines){
+			if(line.trim().startsWith("average loop error:")){
+				LastCompile.loopClosure = line.replaceAll("average loop error:", "");
+			}
+		}
+		LastCompile.compileTime = (System.currentTimeMillis()-exportStart)/1000 + " seconds";
 	}
 
 	private void createScraps(){
