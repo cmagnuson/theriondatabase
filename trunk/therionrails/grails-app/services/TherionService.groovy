@@ -172,69 +172,40 @@ class TherionService implements InitializingBean
 		for(SurveyConnection sc: s.surveyConnections){
 
 			SurveyStation lower, upper, right, left;
-			if(sc.toStation.scrapY>sc.fromStation.scrapY){
+//			if(sc.toStation.scrapY>sc.fromStation.scrapY){
 				lower = sc.fromStation;
 				upper = sc.toStation;
-			}
-			else{
-				lower = sc.toStation;
-				upper = sc.fromStation;
-			}
-//			if(lower.scrapX>upper.scrapX){
-//			left = upper;
-//			right = lower;
 //			}
 //			else{
-//			left = lower;
-//			right = upper;
+//				lower = sc.toStation;
+//				upper = sc.fromStation;
 //			}
-
-
-//			boolean fromLeft = sc.fromStation.scrapX<sc.toStation.scrapX;
-
-//			double angle = Math.atan2(upper.scrapY-lower.scrapY, upper.scrapX-lower.scrapX)*180/Math.PI;
+			double angle = sc.compass
+//			double angle = Math.atan2(Math.abs(sc.fromStation.scrapY-sc.toStation.scrapY), Math.abs(sc.fromStation.scrapX-sc.toStation.scrapX))*180/Math.PI;
 //			double leftAngle = angle-90;
 //			double rightAngle = angle+90;
-
-//			output+="# sc:"+sc.toString()+" l:"+sc.left+" r:"+sc.right+"\n";
-//			output+="line wall\n";
-//			if(fromLeft){
-//			output+=(sc.fromStation.scrapX - sc.left*Math.cos(leftAngle))+" "+(sc.fromStation.scrapY+sc.left*Math.sin(leftAngle))+"\n";
-//			output+=(sc.toStation.scrapX-sc.left*Math.cos(leftAngle))+" "+(sc.toStation.scrapY+sc.left*Math.sin(leftAngle))+"\n";
-//			}
-//			else{
-//			output+=(sc.fromStation.scrapX + sc.left*Math.cos(leftAngle))+" "+(sc.fromStation.scrapY-sc.left*Math.sin(leftAngle))+"\n";
-//			output+=(sc.toStation.scrapX + sc.left*Math.cos(leftAngle))+" "+(sc.toStation.scrapY-sc.left*Math.sin(leftAngle))+"\n";
-//			}
-//			output+="endline\n\n";
-
-//			output+="line wall\n";
-//			if(fromLeft){
-//			output+=(sc.fromStation.scrapX - sc.right*Math.cos(rightAngle))+" "+(sc.fromStation.scrapY+sc.right*Math.sin(rightAngle))+"\n";
-//			output+=(sc.toStation.scrapX-sc.right*Math.cos(rightAngle))+" "+(sc.toStation.scrapY+sc.right*Math.sin(rightAngle))+"\n";
-//			}
-//			else{
-//			output+=(sc.fromStation.scrapX + sc.right*Math.cos(rightAngle))+" "+(sc.fromStation.scrapY-sc.right*Math.sin(rightAngle))+"\n";
-//			output+=(sc.toStation.scrapX + sc.right*Math.cos(rightAngle))+" "+(sc.toStation.scrapY-sc.right*Math.sin(rightAngle))+"\n";
-//			}
-//			output+="endline\n\n";
-			double angle = Math.atan2(sc.fromStation.scrapY-sc.toStation.scrapY, sc.fromStation.scrapX-sc.toStation.scrapX)*180/Math.PI;
-			double leftAngle = angle-90;
-			double rightAngle = angle+90;
 			double scl = sc.length==0 ? 0 : Math.sqrt((sc.fromStation.scrapX-sc.toStation.scrapX)*(sc.fromStation.scrapX-sc.toStation.scrapX)+(sc.fromStation.scrapY-sc.toStation.scrapY)*(sc.fromStation.scrapY-sc.toStation.scrapY))/sc.length
 
-					output+="line u:wall -attr color \""+sc.survey.system.color+"\"\n";
+			double leftRight = Math.cos(angle)*scl;
+			double upDown = Math.sin(angle)*scl;
+			output+="line wall:blocks -place top -attr color \""+sc.survey.system.color+"\"\n";
 
-			output+=(sc.fromStation.scrapX+sc.left*Math.cos(leftAngle)*scl)+" "+(sc.fromStation.scrapY+sc.left*Math.sin(leftAngle)*scl)+"\n";
-			output+=(sc.toStation.scrapX+sc.left*Math.cos(leftAngle)*scl)+" "+(sc.toStation.scrapY+sc.left*Math.sin(leftAngle)*scl)+"\n";			
-
+//			log.error sc.toString() + " "+angle;
+//			if(angle<0 || angle>180){
+//				lower = sc.toStation;
+//				upper = sc.fromStation;
+//			}
+			
+			output+=(lower.scrapX+sc.left*leftRight)+" "+(lower.scrapY+sc.left*upDown)+"\n";
+			output+=(upper.scrapX+sc.left*leftRight)+" "+(upper.scrapY+sc.left*upDown)+"\n";			
+			
 			output+="endline\n";
 
-			output+="line u:wall -attr color \""+sc.survey.system.color+"\"\n";
+			output+="line wall:blocks -place top -attr color \""+sc.survey.system.color+"\"\n";
 
-			output+=(sc.fromStation.scrapX+sc.right*Math.cos(rightAngle)*scl)+" "+(sc.fromStation.scrapY+sc.right*Math.sin(rightAngle)*scl)+"\n";
-			output+=(sc.toStation.scrapX+sc.right*Math.cos(rightAngle)*scl)+" "+(sc.toStation.scrapY+sc.right*Math.sin(rightAngle)*scl)+"\n";			
-
+			output+=(lower.scrapX-sc.right*leftRight)+" "+(lower.scrapY-sc.right*upDown)+"\n";
+			output+=(upper.scrapX-sc.right*leftRight)+" "+(upper.scrapY-sc.right*upDown)+"\n";			
+			
 			output+="endline\n";
 
 		}
@@ -384,21 +355,23 @@ class TherionService implements InitializingBean
 		"  symbol-show point flag:continuation \n" + 
 		"  statistics explo all\n" + 
 		"  scale-bar 50 ft\n" + 
-		"  surface bottom\n" + 
-		"  surface-opacity 90\n" + 
+//		"  surface bottom\n" + 
+//		"  surface-opacity 90\n" + 
 		"  scale 1 250\n" + 
 		"  grid-size 1 1 1 m\n" + 
 		"\n" + 
 		"transparency on\n" + 
-		"  colour map-fg [80 80 80]\n" + 
-		"  colour map-bg [70 90 70]\n" + 
+//		"  colour map-fg [80 80 80]\n" + 
+		 " colour map-fg [80 80 80]\n"+
+        " colour map-bg [70 90 70]\n"+
+//		"  colour map-bg [70 90 70]\n" + 
 		"\n" + 
 		"  code metapost\n" + 
-		"\n" + 
+//		"\n" + 
 		"  def l_survey_cave (expr p) =\n" + 
 		"    draw p withpen PenD withcolor (0.5,0.3,0.3);\n" + 
 		"  enddef;\n" + 
-		"  \n" + 
+		"  endcode\n" + 
 		"  code metapost \n" + 
 		"def p_continuation(expr pos,theta,sc,al) = \n" + 
 		"% draw default continuation symbol \n" + 
@@ -445,6 +418,7 @@ class TherionService implements InitializingBean
 		"#export map  -projection plan -o "+OUTPUT_PATH+"cave_m.pdf \n" + 
 		"export continuation-list -o "+OUTPUT_PATH+"continuation.txt\n" + 
 		"#export atlas -projection plan -o "+OUTPUT_PATH+"cave_a.pdf\n" + 
+		"export map -layout lab-header -output "+OUTPUT_PATH+"cave2.pdf\n" +
 		"export map -projection plan -layout lab-header -output "+OUTPUT_PATH+"cave.pdf\n" +
 		"export map -projection plan -format svg -layout lab-header -output "+OUTPUT_PATH+"cave.svg\n" +
 		"\n" + 

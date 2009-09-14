@@ -73,23 +73,47 @@ class BootStrap {
 	
 		
 		def testWall = new Feature(name: "Color Wall", metapostCode: "\n code metapost\n" + 
-		"     def l_u_wall (expr P)=\n" + 
+//				"vardef color_of(c) =\n"+
+//				//"color col;\n"+
+//				"if (c=\"blue\"): col:=blue;\n" +
+//				"elseif (c=\"red\"): col:=red;\n" +
+//				"fi;\n"+
+//				"col\n"+
+//				"enddef;\n\n"+
+				
+		"     def l_wall_blocks_sandstone (expr P)=\n" + 
 		"       T:=identity;\n" +
-		"if known ATTR__color: \n" + 
+		"if known ATTR_color: \n" + 
 		"       pickup PenA;\n" + 
-		"draw P withpen PenA withcolor ATTR__color ;\n" +
+//		" input ATTR_color;\n"+
+//		"load_color(ATTR_color, \"MPColorTemp.tmp\");\n"+
+		//was with ATTR_color
+//		"color col;\n" +
+//		" col:=black;\n"+
+//		"if ATTR_color=\"blue\":\n"+
+//		" col:=blue;\n"+
+//		"fi;\n"+
+//		"if ATTR_color=\"red\":\n"+
+//		" col:=red;\n"+
+//		"fi;\n"+
+		"scantokens ATTR_color;\n" +
+		"draw P withpen PenA withcolor col;\n" +
 		"fi;\n" +
 		"          enddef;\n" + 
-		"     initsymbol(\"l_u_wall\");\n" + 
-		"\n" + 
+		//"     initsymbol(\"l_u_wall\");\n" + 
+		"\n" +
+		"    initsymbol(\"l_wall_blocks_sandstone\");\n" + 
+		"    symbol-assign line wall:blocks sandstone\n" + 
 		"   endcode\n",
-		postMetapostCode:"text en \"line u:cinderblock\" \"Cinderblock Wall\" \n #symbol-assign line u wall\n",
+		postMetapostCode:"",  //text en \"line u:wall\" \"wall\" \n
 		evalScrapString:
 			"def evalScrap(Object fi){" +
 			" return \"point \"+fi.surveyStation.scrapX+\" \"+fi.surveyStation.scrapY+\" u:cinderblock  -orientation \"+fi.rotation+\" -place top\";" +
 		"}")
 	
-	if(Feature.findByName("Color Wall")==null)
+	if(Feature.findByName("Color Wall")!=null){
+	Feature.findByName("Color Wall").delete()
+	}
 		testWall.save()
 	
 	switch(GrailsUtil.environment) { 
@@ -111,9 +135,9 @@ class BootStrap {
 
 	def initData(){
 
-		def sysa = new TunnelSystem(color: "red", name: "sysa");
+		def sysa = new TunnelSystem(color: "color col; col:=red;", name: "sysa");
 		sysa.save();
-		def sysb = new TunnelSystem(color: "blue", name: "sysb");
+		def sysb = new TunnelSystem(color: "color col; col:=blue;", name: "sysb");
 		sysb.save();
 
 		def mm = new MeasurementMethod(name: "GPS", sd_x:5, sd_y:5, sd_z:5);
