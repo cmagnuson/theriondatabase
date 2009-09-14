@@ -19,6 +19,13 @@
             <div class="message">${flash.message}</div>
             </g:if>
             <div class="dialog">
+            
+            
+            	<center><g:link url="${createLinkTo(dir:'generated/output/indivsurveys', file:surveyInstance.id+'.pdf')}">
+   			 <img src="${createLinkTo(dir:'generated/output/indivsurveys', file:surveyInstance.id+'.svg')}"  width="50%" height="50%">
+				</g:link>
+            </center>
+            <br>
                 <table>
                     <tbody>
 
