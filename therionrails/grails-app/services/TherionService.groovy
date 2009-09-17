@@ -26,7 +26,7 @@ class TherionService implements InitializingBean
 
 	def void exportSurvey(){
 		exportStart = System.currentTimeMillis();
-		
+
 		checkDirectories()
 
 		assignAllSurveyCords()
@@ -146,10 +146,10 @@ class TherionService implements InitializingBean
 			log.error "Compile failed, exit value: "+p.exitValue();
 			LastCompile.status="<font color=\"red\">FAILURE</font>";
 			LastCompile.compileTime = "";
-			LastCompile.loopError = "";
+			LastCompile.loopClosure = "";
 			throw new CompileException(compileOutput);
 		}
-		
+
 		LastCompile.status="<font color=\"green\">SUCCESS</font>";
 		File f = new File(PATH+"therion.log");
 		String text = f.getText();
@@ -183,51 +183,61 @@ class TherionService implements InitializingBean
 
 		for(SurveyStation ss: s.surveyStations){
 			for(FeatureInstance fi: FeatureInstance.findAllBySurveyStation(ss)){
+				if(fi.surveyStation==null){
+					continue;
+				}
 				output+=fi.generateScrapString()+"\n";
 			}
 		}
 
+		String join = "join ";
+		//draw lining
 		for(SurveyConnection sc: s.surveyConnections){
 
-			SurveyStation lower, upper, right, left;
-//			if(sc.toStation.scrapY>sc.fromStation.scrapY){
-				lower = sc.fromStation;
-				upper = sc.toStation;
-//			}
-//			else{
-//				lower = sc.toStation;
-//				upper = sc.fromStation;
-//			}
-			double angle = sc.compass
-//			double angle = Math.atan2(Math.abs(sc.fromStation.scrapY-sc.toStation.scrapY), Math.abs(sc.fromStation.scrapX-sc.toStation.scrapX))*180/Math.PI;
-//			double leftAngle = angle-90;
-//			double rightAngle = angle+90;
+			SurveyStation lower, upper;
+			lower = sc.fromStation;
+			upper = sc.toStation;
+
+			def fis = FeatureInstance.findAllBySurveyConnection(sc);
+			FeatureInstance fi = null;
+			for(FeatureInstance ffi: fis){
+				if(ffi.feature.lining){
+					fi = ffi;
+				}
+			}
+			//default sandstone lining if none assigned
+			if(fi==null){
+				fi = new FeatureInstance(surveyConnection:sc, feature:Feature.findByName("Sandstone Wall"));
+				fi.save();
+			}
+
+			double angle = (90+ Math.atan2(upper.scrapY-lower.scrapY, upper.scrapX-lower.scrapX)*180/Math.PI);
+			if(angle<0){
+				angle+=360;
+			}
 			double scl = sc.length==0 ? 0 : Math.sqrt((sc.fromStation.scrapX-sc.toStation.scrapX)*(sc.fromStation.scrapX-sc.toStation.scrapX)+(sc.fromStation.scrapY-sc.toStation.scrapY)*(sc.fromStation.scrapY-sc.toStation.scrapY))/sc.length
 
 			double leftRight = Math.cos(angle)*scl;
 			double upDown = Math.sin(angle)*scl;
-			output+="line wall:blocks -place top -attr color \""+sc.survey.system.color+"\"\n";
+			output+=fi.generateScrapString()+" -id "+fi.id+".0\n";
+			join+=fi.id+".0 ";
+			
+			output+=(lower.scrapX-sc.left*leftRight)+" "+(lower.scrapY-sc.left*upDown)+"\n";
+			output+=(upper.scrapX-sc.left*leftRight)+" "+(upper.scrapY-sc.left*upDown)+"\n";			
 
-//			log.error sc.toString() + " "+angle;
-//			if(angle<0 || angle>180){
-//				lower = sc.toStation;
-//				upper = sc.fromStation;
-//			}
-			
-			output+=(lower.scrapX+sc.left*leftRight)+" "+(lower.scrapY+sc.left*upDown)+"\n";
-			output+=(upper.scrapX+sc.left*leftRight)+" "+(upper.scrapY+sc.left*upDown)+"\n";			
-			
 			output+="endline\n";
 
-			output+="line wall:blocks -place top -attr color \""+sc.survey.system.color+"\"\n";
-
-			output+=(lower.scrapX-sc.right*leftRight)+" "+(lower.scrapY-sc.right*upDown)+"\n";
-			output+=(upper.scrapX-sc.right*leftRight)+" "+(upper.scrapY-sc.right*upDown)+"\n";			
+			output+=fi.generateScrapString()+" -id "+fi.id+".1\n";
+			//join+=fi.id+".1 ";
 			
+			output+=(upper.scrapX+sc.right*leftRight)+" "+(upper.scrapY+sc.right*upDown)+"\n";			
+			output+=(lower.scrapX+sc.right*leftRight)+" "+(lower.scrapY+sc.right*upDown)+"\n";
+
 			output+="endline\n";
 
 		}
 
+		output+=join+"\n";
 		output+="endscrap\n";
 
 		File f = new File(filename);
@@ -380,8 +390,8 @@ class TherionService implements InitializingBean
 		"\n" + 
 		"transparency on\n" + 
 //		"  colour map-fg [80 80 80]\n" + 
-		 " colour map-fg [80 80 80]\n"+
-        " colour map-bg [70 90 70]\n"+
+		" colour map-fg [80 80 80]\n"+
+		" colour map-bg [70 90 70]\n"+
 //		"  colour map-bg [70 90 70]\n" + 
 		"\n" + 
 		"  code metapost\n" + 
@@ -460,8 +470,8 @@ class TherionService implements InitializingBean
 		//-layout xvi-export
 		"layout names\n"+
 		"debug station-names\n"+
-		 " colour map-fg [80 80 80]\n"+
-	        " colour map-bg [70 90 70]\n"+
+		" colour map-fg [80 80 80]\n"+
+		" colour map-bg [70 90 70]\n"+
 		"endlayout\n"+
 		"export map -fmt xvi -output "+OUTPUT_PATH+"singlesurvey.xvi\n"+
 		"export map -layout names -output "+OUTPUT_PATH+"indivsurveys/"+s.id+".pdf\n"+

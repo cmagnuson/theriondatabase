@@ -23,4 +23,15 @@ class FeatureInstance {
     	return feature.toString()+"  SS:"+surveyStation+" SC:"+surveyConnection;
     }
     
+    public double inferRotation(){
+    	SurveyConnection con = surveyConnection;
+    	if(con==null){
+    		con = SurveyConnection.findByToStation(surveyStation)
+    	}
+    	if(con.compass<0){
+    		return con.compass+360;
+    	}
+    	return con.compass;
+    }
+    
 }

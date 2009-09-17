@@ -10,119 +10,156 @@ class BootStrap {
 		"def evalScrap(Object fi){" +
 		" return \"point \"+fi.surveyStation.scrapX+\" \"+fi.surveyStation.scrapY+\" continuation\";" +
 	"}")
-	if(Feature.findByName("Manhole")==null)
-		continuation.save()
-	
+	updateFeature(continuation);
+
 	def manhole = new Feature(name: "Manhole", metapostCode:"code metapost\n" +
-				"def p_u_manhole (expr pos,theta,sc,al)=\n" + 
-				"    U:=(.4u,.4u);\n" + 
-				"    T:=identity aligned al rotated theta scaled sc shifted pos;\n" + 
-				"    pickup PenA;\n" + 
-				"    p := fullcircle scaled 1u; \n" + 
-				"    thdraw p;\n" + 
-				"enddef;\n" +
-				"     initsymbol(\"p_u_manhole\");\n" + 
-				" endcode\n",
-				postMetapostCode: "text en \"point u:manhole\" \"manhole\" \n",
-				evalScrapString:
-					"def evalScrap(Object fi){" +
-					" return \"point \"+fi.surveyStation.scrapX+\" \"+fi.surveyStation.scrapY+\" u:manhole  -orientation \"+fi.rotation+\" -place top\";" +
-				"}")
-	if(Feature.findByName("Manhole")==null)
-		manhole.save()
-	
+			"def p_u_manhole (expr pos,theta,sc,al)=\n" + 
+			"    U:=(.4u,.4u);\n" + 
+			"    T:=identity aligned al rotated theta scaled sc shifted pos;\n" + 
+			"    pickup PenA;\n" + 
+			"    p := fullcircle scaled 1u; \n" + 
+			"    thdraw p;\n" + 
+			"enddef;\n" +
+			"     initsymbol(\"p_u_manhole\");\n" + 
+			" endcode\n",
+			postMetapostCode: "text en \"point u:manhole\" \"manhole\" \n",
+			evalScrapString:
+				"def evalScrap(Object fi){" +
+				" return \"point \"+fi.surveyStation.scrapX+\" \"+fi.surveyStation.scrapY+\" u:manhole  -orientation \"+fi.rotation+\" -place top\";" +
+	"}")
+	updateFeature(manhole);
+
 	def interconnect = new Feature(name: "Interconnect", metapostCode:" code metapost\n" + 
-				"     def p_u_interconnect (expr P,R,S,A)=\n" + 
-				"       T:=identity aligned A rotated R scaled S shifted P;\n" + 
-				"       thfill (.5u,.5u)--(-.5u,.5u)--(-.3u,.3u)--(.3u,.3u)--cycle;\n" + 
-				"       thfill (.5u,-.5u)--(-.5u,-.5u)--(-.3u,-.3u)--(.3u,-.3u)--cycle;\n" + 
-				"       thfill (.5u,.5u)--(.5u,-.5u)--(.3u,-.3u)--(.3u,.3u)--cycle;\n" + 
-				"       thfill (-.5u,.5u)--(-.5u,-.5u)--(-.3u,-.3u)--(-.3u,.3u)--cycle;       \n" + 
-				"     enddef;\n" + 
-				"     initsymbol(\"p_u_interconnect\");\n" + 
-				"\n" + 
-				"   endcode\n",
-				postMetapostCode:"text en \"point u:interconnect\" \"interconnect\" \n",
-				evalScrapString:
-					"def evalScrap(Object fi){" +
-					" return \"point \"+fi.surveyStation.scrapX+\" \"+fi.surveyStation.scrapY+\" u:interconnect  -orientation \"+fi.rotation+\" -place top\";" +
-				"}")
-	if(Feature.findByName("Interconnect")==null)
-		interconnect.save()
+			"     def p_u_interconnect (expr P,R,S,A)=\n" + 
+			"       T:=identity aligned A rotated R scaled S shifted P;\n" + 
+			"       thfill (.5u,.5u)--(-.5u,.5u)--(-.3u,.3u)--(.3u,.3u)--cycle;\n" + 
+			"       thfill (.5u,-.5u)--(-.5u,-.5u)--(-.3u,-.3u)--(.3u,-.3u)--cycle;\n" + 
+			"       thfill (.5u,.5u)--(.5u,-.5u)--(.3u,-.3u)--(.3u,.3u)--cycle;\n" + 
+			"       thfill (-.5u,.5u)--(-.5u,-.5u)--(-.3u,-.3u)--(-.3u,.3u)--cycle;       \n" + 
+			"     enddef;\n" + 
+			"     initsymbol(\"p_u_interconnect\");\n" + 
+			"\n" + 
+			"   endcode\n",
+			postMetapostCode:"text en \"point u:interconnect\" \"interconnect\" \n",
+			evalScrapString:
+				"def evalScrap(Object fi){" +
+				" return \"point \"+fi.surveyStation.scrapX+\" \"+fi.surveyStation.scrapY+\" u:interconnect  -orientation \"+fi.rotation+\" -place top\";" +
+	"}")
+	updateFeature(interconnect);
 
 	def cbWall = new Feature(name: "Cinderblock Wall", metapostCode: "\n code metapost\n" + 
-		"     def p_u_cinderblock (expr P,R,S,A)=\n" + 
-		"       U:=(.6u,.6u);  \n" + 
-		"       T:=identity aligned A rotated R scaled S shifted P;\n" + 
-		"       pickup PenA;\n" + 
-		"       thdraw (.3u,.3u)--(.3u,-.01u)--(-.3u,-.01u)--(-.3u,.3u)--cycle;\n" + 
-		"       thdraw (.9u,.3u)--(.9u,-.01u)--(.3u,-.01u)--(.3u,.3u)--cycle;\n" + 
-		"       thdraw (-.9u,.3u)--(-.9u,-.01u)--(-.3u,-.01u)--(-.3u,.3u)--cycle;\n" + 
-		"          enddef;\n" + 
-		"     initsymbol(\"p_u_cinderblock\");\n" + 
-		"\n" + 
-		"   endcode\n",
-		postMetapostCode:"text en \"point u:cinderblock\" \"Cinderblock Wall\" \n",
-		evalScrapString:
-			"def evalScrap(Object fi){" +
-			" return \"point \"+fi.surveyStation.scrapX+\" \"+fi.surveyStation.scrapY+\" u:cinderblock  -orientation \"+fi.rotation+\" -place top\";" +
-		"}")
-	
-	if(Feature.findByName("Cinderblock Wall")==null)
-		cbWall.save()
-	
-		
-		def testWall = new Feature(name: "Color Wall", metapostCode: "\n code metapost\n" + 
-//				"vardef color_of(c) =\n"+
-//				//"color col;\n"+
-//				"if (c=\"blue\"): col:=blue;\n" +
-//				"elseif (c=\"red\"): col:=red;\n" +
-//				"fi;\n"+
-//				"col\n"+
-//				"enddef;\n\n"+
-				
-		"     def l_wall_blocks_sandstone (expr P)=\n" + 
-		"       T:=identity;\n" +
-		"if known ATTR_color: \n" + 
-		"       pickup PenA;\n" + 
-//		" input ATTR_color;\n"+
-//		"load_color(ATTR_color, \"MPColorTemp.tmp\");\n"+
-		//was with ATTR_color
-//		"color col;\n" +
-//		" col:=black;\n"+
-//		"if ATTR_color=\"blue\":\n"+
-//		" col:=blue;\n"+
-//		"fi;\n"+
-//		"if ATTR_color=\"red\":\n"+
-//		" col:=red;\n"+
-//		"fi;\n"+
-		"scantokens ATTR_color;\n" +
-		"draw P withpen PenA withcolor col;\n" +
-		"fi;\n" +
-		"          enddef;\n" + 
-		//"     initsymbol(\"l_u_wall\");\n" + 
-		"\n" +
-		"    initsymbol(\"l_wall_blocks_sandstone\");\n" + 
-		"    symbol-assign line wall:blocks sandstone\n" + 
-		"   endcode\n",
-		postMetapostCode:"",  //text en \"line u:wall\" \"wall\" \n
-		evalScrapString:
-			"def evalScrap(Object fi){" +
-			" return \"point \"+fi.surveyStation.scrapX+\" \"+fi.surveyStation.scrapY+\" u:cinderblock  -orientation \"+fi.rotation+\" -place top\";" +
-		"}")
-	
-	if(Feature.findByName("Color Wall")!=null){
-	Feature.findByName("Color Wall").delete()
-	}
-		testWall.save()
-	
+			"     def p_u_cinderblock (expr P,R,S,A)=\n" + 
+			"       U:=(.6u,.6u);  \n" + 
+			"       T:=identity aligned A rotated R scaled S shifted P;\n" + 
+			"       pickup PenA;\n" + 
+			"       thdraw (.3u,.3u)--(.3u,-.3u)--(-.3u,-.3u)--(-.3u,.3u)--cycle;\n" + 
+			"       thdraw (.9u,.3u)--(.9u,-.3u)--(.3u,-.3u)--(.3u,.3u)--cycle;\n" + 
+			"       thdraw (-.9u,.3u)--(-.9u,-.3u)--(-.3u,-.3u)--(-.3u,.3u)--cycle;\n" + 
+			"          enddef;\n" + 
+			"     initsymbol(\"p_u_cinderblock\");\n" + 
+			"\n" + 
+			"   endcode\n",
+			postMetapostCode:"text en \"point u:cinderblock\" \"cinderblock wall\" \n",
+			evalScrapString:
+				"def evalScrap(Object fi){" +
+				" return \"point \"+fi.surveyStation.scrapX+\" \"+fi.surveyStation.scrapY+\" u:cinderblock  -orientation \"+fi.rotation+\" -place top\";" +
+	"}")
+
+	updateFeature(cbWall);
+
+	def brickWall = new Feature(name: "Brick Wall", metapostCode: "\n code metapost\n" + 
+			"     def p_u_brick (expr P,R,S,A)=\n" + 
+			"       U:=(.6u,.6u);  \n" + 
+			"       T:=identity aligned A rotated R scaled S shifted P;\n" + 
+			"       pickup PenA;\n" + 
+			"       thdraw (.3u,.3u)--(.3u,-.3u)--(-.3u,-.3u)--(-.3u,.3u)--cycle;\n" + 
+			"       thdraw (.9u,.3u)--(.9u,-.3u)--(.3u,-.3u)--(.3u,.3u)--cycle;\n" + 
+			"       thdraw (-.9u,.3u)--(-.9u,-.3u)--(-.3u,-.3u)--(-.3u,.3u)--cycle;\n" + 
+			"		thdraw (-.9u, .01u)--(.9u,.01u);\n"+
+			"          enddef;\n" + 
+			"     initsymbol(\"p_u_brick\");\n" + 
+			"\n" + 
+			"   endcode\n",
+			postMetapostCode:"text en \"point u:brick\" \"brick wall\" \n",
+			evalScrapString:
+				"def evalScrap(Object fi){" +
+				" return \"point \"+fi.surveyStation.scrapX+\" \"+fi.surveyStation.scrapY+\" u:brick  -orientation \"+fi.inferRotation()+\" -place top\";" +
+	"}")
+
+	updateFeature(brickWall);
+
+	def sandstoneWall = new Feature(name: "Sandstone Wall", metapostCode: "\n code metapost\n" + 				
+			"     def l_u_sandstone (expr P)=\n" + 
+			"       T:=identity;\n" +
+			"if known ATTR_color: \n" + 
+			" scantokens ATTR_color;\n" +
+			"else: \n"+
+			" scantokens \"color col; col:=black;\";\n"+
+			"fi;\n"+
+			"draw P withpen PenA withcolor col;\n" +
+			"          enddef;\n\n" + 
+			"    initsymbol(\"l_u_sandstone\");\n" + 
+			"def l_u_sandstone_legend = \n" + 
+			"l_u_sandstone(((.2,.2) -- (.8,.8)) inscale) \n" + 
+			"enddef; \n" + 
+			"   endcode\n",
+			postMetapostCode:"text en \"line u:sandstone\" \"sandstone wall\" \n",
+			lining: true,
+			evalScrapString:
+				"def evalScrap(Object fi){" +
+				"return \"line u:sandstone -outline out -place top -attr color \\\"\"+fi.surveyConnection.survey.system.color+\"\\\"\" "+
+	"}")
+	updateFeature(sandstoneWall);
+
+	def cbWallLine = new Feature(name: "Cinderblock Liner", metapostCode: "\n code metapost\n" + 				
+			"     def l_u_cinderblock (expr P)=\n" + 
+			"       T:=identity;\n" +
+			"if known ATTR_color: \n" + 
+			" scantokens ATTR_color;\n" +
+			"else: \n"+
+			" scantokens \"color col; col:=black;\";\n"+
+			"fi;\n"+
+			"  T:=identity;\n" + 
+			"  cas := 0;\n" + 
+			"  dlzka := arclength P;\n" + 
+			"if dlzka > 0:\n" + 
+			"  mojkrok:=adjust_step(dlzka, 1.5u);\n" + 
+			"  pickup PenA;\n" + 
+			"  forever:\n" + 
+			"    t1 := arctime (cas ) of P;\n" + 
+			"    t2 := arctime (cas + mojkrok) of P;\n" + 
+			"    t3 := arctime (cas + mojkrok * 1/2) of P;\n"+
+			"    q := ((point t1 of P) + .6u * unitvector(thdir(P,t1) rotated -90)) --\n" + 
+			"         (subpath (t1,t2) of P) --\n" + 
+			"         ((point t2 of P) + .6u * unitvector(thdir(P,t2) rotated -90)) --\n" +
+			"         ((point t1 of P) + .6u * unitvector(thdir(P,t1) rotated -90));\n"+
+			"    draw q withcolor col;\n" + 
+			"    q := ((point t3 of P) + .6u * unitvector(thdir(P,t3) rotated -90)) --\n" +
+			"         (point t3 of P);\n"+
+			"    draw q withcolor col;\n"+
+			"    cas := cas + mojkrok;\n" + 
+			"    exitif cas > dlzka - (2*mojkrok/3); % for rounding errors\n" + 
+			"  endfor;\n" + 
+			"fi;\n" +
+			"          enddef;\n\n" + 
+			"    initsymbol(\"l_u_cinderblock\");\n" +
+			"def l_u_cinderblock_legend = \n" +
+			"l_u_cinderblock(((.2,.65) -- (.8,.65)) inscale) \n" + 
+			"enddef; \n" + 
+			"   endcode\n",
+			lining: true,
+			postMetapostCode:"text en \"line u:cinderblock\" \"cinderblock liner\" \n",
+			evalScrapString:
+				"def evalScrap(Object fi){" +
+				"return \"line u:cinderblock -outline out -place top -attr color \\\"\"+fi.surveyConnection.survey.system.color+\"\\\"\" "+
+	"}")
+	updateFeature(cbWallLine);
+
 	switch(GrailsUtil.environment) { 
 	case "development": 
 		initData()
 		break 
 	case "test": 
-		//def ctx = servletContext.getAttribute(GrailsApplicationAttributes.APPLICATION_CONTEXT)
-		//def therionService =  ctx.getBean("therionService")
 		initData()
 		break 
 	case "production": 
@@ -133,8 +170,19 @@ class BootStrap {
 	def destroy = {
 	}
 
-	def initData(){
+	def updateFeature(f){
+		if(Feature.findByName(f.name)!=null){
+			Feature fet = Feature.findByName(f.name);
+			fet.properties = f.properties;
+			fet.save()
+		}
+		else{
+			f.save()
+		}
+	}
 
+	def initData(){
+		//"color col; col:=red;"2
 		def sysa = new TunnelSystem(color: "color col; col:=red;", name: "sysa");
 		sysa.save();
 		def sysb = new TunnelSystem(color: "color col; col:=blue;", name: "sysb");
@@ -334,15 +382,28 @@ class BootStrap {
 		def sc2 = SurveyConnection.findByFromStation(st2)
 		def fi2 = new FeatureInstance(feature:Feature.findByName("Interconnect"), surveyConnection: sc2, surveyStation: st2)
 		fi2.save();
-		
+
 		def fi3 = new FeatureInstance(feature:Feature.findByName("Cinderblock Wall"),
 				surveyStation: SurveyStation.findBySurveyAndName(sura, "117"))
 		fi3.save()
+
+		def fi4 = new FeatureInstance(feature:Feature.findByName("Brick Wall"),
+				surveyStation: SurveyStation.findBySurveyAndName(sura, "108.1"))
+		fi4.save()
+
+		for(SurveyConnection sc: SurveyConnection.list()){
+			if(sc.survey.system.id==sysb.id){
+				continue;
+			}
+			def fi5 = new FeatureInstance(feature:Feature.findByName("Cinderblock Liner"),
+					surveyConnection: sc)
+			fi5.save()
+		}
 	}
 
-	
-	
-	
+
+
+
 	public void importSurvey(Survey surveyInstance, String rawData){
 		Double FEET_TO_METERS =  1; //import test data in meters
 
