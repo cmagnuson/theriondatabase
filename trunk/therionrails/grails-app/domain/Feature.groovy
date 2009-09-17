@@ -11,8 +11,10 @@ class Feature {
      metapostCode()
      postMetapostCode()
      evalScrapString()
+     lining(nullable:false)
     }
     
+    boolean lining = false;
     String name;
     String metapostCode;  
     String postMetapostCode;
