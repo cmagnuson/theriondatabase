@@ -220,7 +220,7 @@ class TherionService implements InitializingBean
 			double leftRight = Math.cos(angle)*scl;
 			double upDown = Math.sin(angle)*scl;
 			output+=fi.generateScrapString()+" -id "+fi.id+".0\n";
-			join+=fi.id+".0 ";
+			//join+=fi.id+".0 ";
 			
 			output+=(lower.scrapX-sc.left*leftRight)+" "+(lower.scrapY-sc.left*upDown)+"\n";
 			output+=(upper.scrapX-sc.left*leftRight)+" "+(upper.scrapY-sc.left*upDown)+"\n";			
@@ -237,7 +237,7 @@ class TherionService implements InitializingBean
 
 		}
 
-		output+=join+"\n";
+		//output+=join+"\n";
 		output+="endscrap\n";
 
 		File f = new File(filename);
