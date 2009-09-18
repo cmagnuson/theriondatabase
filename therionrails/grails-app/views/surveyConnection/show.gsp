@@ -108,6 +108,11 @@
                     <span class="button"><g:actionSubmit class="edit" value="Edit" /></span>
                     <span class="button"><g:actionSubmit class="delete" onclick="return confirm('Are you sure?');" value="Delete" /></span>
                 </g:form>
+                <g:form controller="featureInstance">
+                    <input type="hidden" name="surveyConnection.id" value="${surveyConnectionInstance?.id}" />
+                    <g:select name="featureInstance.id" from="${Feature.list()}" optionKey="id"/>
+                    <span class="button"><g:actionSubmit class="edit" action="create" value="Add Feature" /></span>
+                </g:form>
             </div>
         </div>
     </body>

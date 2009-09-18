@@ -81,12 +81,22 @@ class FeatureInstanceController {
     }
 
     def create = {
-		def surveyStation = SurveyStation.get(Long.valueOf(params['surveyStation'].id))
+    	def stationId = params['surveyStation']?.id
+    	def connectionId = params['surveyConnection']?.id
+    	def surveyStation;
+    	def surveyConnection;
+    	if(stationId!=null){
+			surveyStation = SurveyStation.get(Long.valueOf(stationId))
+		}
+		if(connectionId!=null){
+			surveyConnection = SurveyConnection.get(Long.valueOf(connectionId))
+		}
 		def feature = Feature.get(Long.valueOf(params['featureInstance'].id))
 		
         def featureInstanceInstance = new FeatureInstance()
         featureInstanceInstance.properties = params
         featureInstanceInstance.surveyStation = surveyStation
+        featureInstanceInstance.surveyConnection = surveyConnection
         featureInstanceInstance.feature = feature
         return ['featureInstanceInstance':featureInstanceInstance]
     }
