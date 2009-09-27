@@ -7,9 +7,10 @@ class FeatureInstance {
     	surveyConnection(nullable:true) //...was... required to make it easier to do things for station (if we know the direction...)
     	surveyStation(nullable:true)    //if this is true, we are operating on a connection, if not then on a station
     }
-    
-    SurveyConnection surveyConnection;
-    SurveyStation surveyStation;
+
+    static belongsTo =  [surveyConnection: SurveyConnection, surveyStation: SurveyStation]
+//    SurveyConnection surveyConnection;
+ //   SurveyStation surveyStation;
     Feature feature;
     int rotation = 0;
     double centerOffset = 0;

@@ -6,11 +6,11 @@ class BootStrap {
 
 	def init = { servletContext ->   
 
-	def continuation = new Feature(name: "Continuation", metapostCode:"", postMetapostCode:"", evalScrapString: 
-		"def evalScrap(Object fi){" +
-		" return \"point \"+fi.surveyStation.scrapX+\" \"+fi.surveyStation.scrapY+\" continuation\";" +
-	"}")
-	updateFeature(continuation);
+//	def continuation = new Feature(name: "Continuation", metapostCode:"", postMetapostCode:"", evalScrapString: 
+//		"def evalScrap(Object fi){" +
+//		" return \"point \"+fi.surveyStation.scrapX+\" \"+fi.surveyStation.scrapY+\" continuation\";" +
+//	"}")
+//	updateFeature(continuation);
 
 	def manhole = new Feature(name: "Manhole", metapostCode:"code metapost\n" +
 			"def p_u_manhole (expr pos,theta,sc,al)=\n" + 
@@ -29,23 +29,23 @@ class BootStrap {
 	"}")
 	updateFeature(manhole);
 
-	def interconnect = new Feature(name: "Interconnect", metapostCode:" code metapost\n" + 
-			"     def p_u_interconnect (expr P,R,S,A)=\n" + 
-			"       T:=identity aligned A rotated R scaled S shifted P;\n" + 
-			"       thfill (.5u,.5u)--(-.5u,.5u)--(-.3u,.3u)--(.3u,.3u)--cycle;\n" + 
-			"       thfill (.5u,-.5u)--(-.5u,-.5u)--(-.3u,-.3u)--(.3u,-.3u)--cycle;\n" + 
-			"       thfill (.5u,.5u)--(.5u,-.5u)--(.3u,-.3u)--(.3u,.3u)--cycle;\n" + 
-			"       thfill (-.5u,.5u)--(-.5u,-.5u)--(-.3u,-.3u)--(-.3u,.3u)--cycle;       \n" + 
-			"     enddef;\n" + 
-			"     initsymbol(\"p_u_interconnect\");\n" + 
-			"\n" + 
-			"   endcode\n",
-			postMetapostCode:"text en \"point u:interconnect\" \"interconnect\" \n",
-			evalScrapString:
-				"def evalScrap(Object fi){" +
-				" return \"point \"+fi.surveyStation.scrapX+\" \"+fi.surveyStation.scrapY+\" u:interconnect  -orientation \"+fi.rotation+\" -place top\";" +
-	"}")
-	updateFeature(interconnect);
+//	def interconnect = new Feature(name: "Interconnect", metapostCode:" code metapost\n" + 
+//			"     def p_u_interconnect (expr P,R,S,A)=\n" + 
+//			"       T:=identity aligned A rotated R scaled S shifted P;\n" + 
+//			"       thfill (.5u,.5u)--(-.5u,.5u)--(-.3u,.3u)--(.3u,.3u)--cycle;\n" + 
+//			"       thfill (.5u,-.5u)--(-.5u,-.5u)--(-.3u,-.3u)--(.3u,-.3u)--cycle;\n" + 
+//			"       thfill (.5u,.5u)--(.5u,-.5u)--(.3u,-.3u)--(.3u,.3u)--cycle;\n" + 
+//			"       thfill (-.5u,.5u)--(-.5u,-.5u)--(-.3u,-.3u)--(-.3u,.3u)--cycle;       \n" + 
+//			"     enddef;\n" + 
+//			"     initsymbol(\"p_u_interconnect\");\n" + 
+//			"\n" + 
+//			"   endcode\n",
+//			postMetapostCode:"text en \"point u:interconnect\" \"interconnect\" \n",
+//			evalScrapString:
+//				"def evalScrap(Object fi){" +
+//				" return \"point \"+fi.surveyStation.scrapX+\" \"+fi.surveyStation.scrapY+\" u:interconnect  -orientation \"+fi.rotation+\" -place top\";" +
+//	"}")
+//	updateFeature(interconnect);
 
 	def cbWall = new Feature(name: "Cinderblock Wall", metapostCode: "\n code metapost\n" + 
 			"     def p_u_cinderblock (expr P,R,S,A)=\n" + 
@@ -182,6 +182,10 @@ class BootStrap {
 	}
 
 	def initData(){
+		def featureImportService = new FeatureImportService();
+		featureImportService.PATH = "web-app/WEB-INF/features/";
+		featureImportService.importFromFiles()
+
 		//"color col; col:=red;"2
 		def sysa = new TunnelSystem(color: "color col; col:=red;", name: "sysa");
 		sysa.save();

@@ -71,7 +71,7 @@
                             
                             <td  valign="top" style="text-align:left;" class="value">
                                 <ul>
-                                <g:each var="s" in="${surveyInstance.surveyConnections}">
+                                <g:each var="s" in="${surveyInstance.surveyConnections.sort{ o1, o2 -> o1.dateCreated.getTime() - o2.dateCreated.getTime();}}">
                                     <li><g:link controller="surveyConnection" action="show" id="${s.id}">${s?.encodeAsHTML()}</g:link></li>
                                 </g:each>
                                 </ul>
@@ -84,7 +84,7 @@
                             
                             <td  valign="top" style="text-align:left;" class="value">
                                 <ul>
-                                <g:each var="s" in="${surveyInstance.surveyStations}">
+                                <g:each var="s" in="${surveyInstance.surveyStations.sort{ o1, o2 -> o1.dateCreated.getTime() - o2.dateCreated.getTime();}}">
                                     <li><g:link controller="surveyStation" action="show" id="${s.id}">${s?.encodeAsHTML()}</g:link></li>
                                 </g:each>
                                 </ul>
@@ -105,7 +105,14 @@
                             <td valign="top" class="value">${fieldValue(bean:surveyInstance, field:'team')}</td>
                             
                         </tr>
-                    
+                        
+                        
+                        <tr class="prop">
+                            <td valign="top" class="name">Team:</td>
+                            
+                            <td valign="top" class="value">${fieldValue(bean:surveyInstance, field:'surveyNotes')}</td>
+                            
+                        </tr>
                     
                     <tr class="prop">
                     	<td valign="top" class="name">Video:</td>

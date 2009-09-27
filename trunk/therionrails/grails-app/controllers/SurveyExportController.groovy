@@ -7,8 +7,6 @@ class SurveyExportController {
 	 def exportSurvey = {
 	 
 	 	therionService.exportSurvey()
-	 
-    	def surveyInstance = Survey.get( params.id )
-    		return [surveyInstance : surveyInstance]
+	 	redirect(uri:"/")
     }
 }

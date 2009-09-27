@@ -114,6 +114,15 @@
                                     <input type="text" id="title" name="title" value="${fieldValue(bean:surveyInstance,field:'title')}"/>
                                 </td>
                             </tr> 
+                            
+                             <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="surveyNotes">Survey Notes:</label>
+                                </td>    
+                               <td valign="top" class="value ${hasErrors(bean:surveyInstance,field:'surveyNotes','errors')}">
+                                    <g:textArea rows="120" cols="100" name="surveyNotes" value="${fieldValue(bean:surveyInstance,field:'surveyNotes')}"/>
+                                </td>
+                            </tr> 
                         
                         </tbody>
                     </table>

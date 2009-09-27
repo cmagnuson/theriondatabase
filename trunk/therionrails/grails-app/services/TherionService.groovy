@@ -7,6 +7,8 @@ import org.codehaus.groovy.grails.commons.ApplicationHolder
 class TherionService implements InitializingBean 
 {
 
+    boolean transactional = true;
+
 	public static final Double FEET_TO_METERS =  0.3048;
 
 	def grailsApplication
@@ -261,9 +263,11 @@ class TherionService implements InitializingBean
 		output+=" survey "+s.system.name+"-"+s.id+"  \\\n";
 		output+="   -title \""+s.title+"\" \\\n\n";
 		output+="   centerline\n" + 
-		" units length 1 meter\n" + 
-		"     team \""+s.team+"\"\n"+ 
-		"     date "+format.format(s.datesurveyed)+"\n" + 
+		" units length 1 meter\n";
+		for(String member: s.team.replaceAll(",","").split(" ")){
+			output+="     team \""+member+"\"\n";
+		}
+		output+="     date "+format.format(s.datesurveyed)+"\n" + 
 		"     walls on\n" + 
 		"     cs UTM15\n\n" +
 		"# "+s.note+"\n";
@@ -280,9 +284,9 @@ class TherionService implements InitializingBean
 			}
 		}
 
-		output+="\n sd length .05 meter        \n" + 
-		"  sd compass .5 degrees\n" + 
-		"  sd clino .5 degree  \n" + 
+		output+="\n sd length .08 meter        \n" + 
+		"  sd compass 3 degrees\n" + 
+		"  sd clino 1.5 degree  \n" + 
 		"  data normal from to length compass clino left right up down\n\n";
 
 		for(SurveyConnection sc: s.surveyConnections){

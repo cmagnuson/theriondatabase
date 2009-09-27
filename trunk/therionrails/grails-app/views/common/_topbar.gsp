@@ -9,6 +9,7 @@
 	<g:link controller="fixedPoint">Fixed Points</g:link> | 
 	<g:link controller="equate">Equates</g:link> | 
 	<g:link controller="measurementMethod">Measurement Methods</g:link> | 
+	<g:link controller="surveyExport">Manual Compile</g:link> | 
 	<g:link url="${createLinkTo(dir:'generated/output')}">View Maps</g:link>
 	</h3>
 	<br>

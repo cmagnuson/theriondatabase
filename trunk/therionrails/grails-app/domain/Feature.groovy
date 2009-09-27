@@ -15,10 +15,10 @@ class Feature {
     }
     
     boolean lining = false;
-    String name;
-    String metapostCode;  
-    String postMetapostCode;
-    String evalScrapString; //groovy code which for a method named evalScrap which takes a featureInstance as input
+    String name = "";
+    String metapostCode = "";  
+    String postMetapostCode = "";
+    String evalScrapString = "def evalScrap(Object fi){ return \"\"}"; //groovy code which for a method named evalScrap which takes a featureInstance as input
     						//in this way custom attributes can be used for different features without the need to
     						//create explicit classes for different features
     						
