@@ -4,13 +4,8 @@ TODO:
 -minimized list of survey stations/connections in survey view (or maybe view of data as imported?)
 -make fi code auto-include color code?
 -legend for tunnelsystems and colors
-
 -fixed-point entry/update as lon/lat
 -notes for features (and their display on generated maps)
--notes/original survey data for surveys
--loading of features from text/properties file
-	-reading from disk AND flushing back on changes
-	-textArea input box for FI edit (preserves newlines)
 -simple testing of views pages, just for exceptions
 
 Needed Features:
@@ -27,6 +22,8 @@ toolsts ledge to center - distance and angles
 2nd check 18-19, see notes
 
 Done:
+-notes/original survey data for surveys
+-loading of features from text/properties file
 -add manual compile link
 -google map of fixed point on FP page
 -featureInstances belongsTo surveyStation and surveyConnection (can one of them still be null?) so deletes can be performed on surveys
