@@ -108,7 +108,7 @@
                         
                         
                         <tr class="prop">
-                            <td valign="top" class="name">Team:</td>
+                            <td valign="top" class="name">Survey Notes:</td>
                             
                             <td valign="top" class="value">${fieldValue(bean:surveyInstance, field:'surveyNotes')}</td>
                             
