@@ -12,9 +12,12 @@ class SurveyStation {
 	String name;
     String note;
     Date timeMeasured;
+    Date dateCreated;
     
     double scrapX
     double scrapY
+    static hasMany = [featureInstances : FeatureInstance]
+
     
     public String toString(){
     	survey.title+" : "+name

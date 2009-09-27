@@ -2,6 +2,7 @@ class Survey {
 
     static constraints = {
     	video(nullable:true, maxSize:2097152000)
+		surveyNotes type:"text" 
     }
    static mapping = { 
     //  columns { 
@@ -14,6 +15,7 @@ class Survey {
 	String team;
 	String title;
 	String note;
+	String surveyNotes = "";
 	TunnelSystem system;
 	byte[] video;
 	

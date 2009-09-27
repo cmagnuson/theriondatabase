@@ -1,6 +1,6 @@
 import grails.test.*
 
-class FeatureTests extends GrailsUnitTestCase {
+class FeatureIntegrationTests extends GrailsUnitTestCase {
     protected void setUp() {
         super.setUp()
     }

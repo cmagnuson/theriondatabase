@@ -1,16 +1,35 @@
 TODO:
--finish adding features, externalize to file?
--add area/line features...
+-add area/generic line features...
 -sanity checking on import, print out errors
--users and privledges - view vs. create/update vs. admin..?
--tagging of surveyConnections with start/end time for video purposes, option to import this from text file
--video cutting to clips for each surveyConnection
 -minimized list of survey stations/connections in survey view (or maybe view of data as imported?)
--make metapost code auto-include color code?
+-make fi code auto-include color code?
 -legend for tunnelsystems and colors
 
+-fixed-point entry/update as lon/lat
+-notes for features (and their display on generated maps)
+-notes/original survey data for surveys
+-loading of features from text/properties file
+	-reading from disk AND flushing back on changes
+	-textArea input box for FI edit (preserves newlines)
+-simple testing of views pages, just for exceptions
+
+Needed Features:
+-backfilled sand -3/5/11/35
+-brick liner -14-15
+-pipe under wall? - 19
+-conc. liner
+-conc. wall - 44/31
+-add features for 2nd survey
+
+Resurvey:
+1-2 accurate distance
+toolsts ledge to center - distance and angles
+2nd check 18-19, see notes
 
 Done:
+-add manual compile link
+-google map of fixed point on FP page
+-featureInstances belongsTo surveyStation and surveyConnection (can one of them still be null?) so deletes can be performed on surveys
 -point features
 -add equates - make work for multiple (2+) matched survey stations
 -add fixed point output
@@ -25,6 +44,13 @@ Done:
 -way to display therion.log for error compiles, also show it or parse it for loop closure errors
 -legend fix on lines (straight)
 -inside outside fixes on lines
+-defaults for features
+-sorting surveyStations/surveyConnections in survey view based on dateSurveyed
 
 Skipped:
 -joins for all lines in each survey (thbook 29-30)
+-video cutting to clips for each surveyConnection
+-tagging of surveyConnections with start/end time for video purposes, option to import this from text file
+-users and privledges - view vs. create/update vs. admin..?
+-google map of KML on main page
+-compare laptop/vs. server LRUD walls, fix if needed

@@ -18,6 +18,8 @@ class SurveyConnection {
     double right;
     double up;
     double down;
+    Date dateCreated;
+    static hasMany = [featureInstances : FeatureInstance]
     
     public String toString(){
     	fromStation.toString() +"->"+ toStation.toString()

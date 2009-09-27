@@ -21,6 +21,16 @@
                     <tbody>
 
                     
+                    	<tr class="prop">
+                    		<td valign="top" class="name">Map:</td>
+                    		<td valign="top" class="value">
+	                    		<% ref = new uk.me.jstott.jcoord.UTMRef(fixedPointInstance.x, fixedPointInstance.y, 'T' as char, 15);%>
+	                    		<center>
+	                    		<img src="http://maps.google.com/maps/api/staticmap?key=ABQIAAAAiuPVg850W_6nz_Xq0YZbBhSrESv4-HCD7-CxgDZyxXuj1_HzYhQUlbzFYM8NU4bu5HoPhWQPtQCYLQ&sensor=false&size=300x300&markers=${(ref.toLatLng().getLat()+"0000000").substring(0,9)+","+(ref.toLatLng().getLng()+"000000").substring(0,9)}">
+								</center>
+                    		</td>
+                    	</tr>
+                    
                         <tr class="prop">
                             <td valign="top" class="name">Id:</td>
                             
