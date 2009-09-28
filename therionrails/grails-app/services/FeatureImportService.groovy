@@ -33,12 +33,13 @@ class FeatureImportService implements InitializingBean {
 		Feature f = new Feature();
 		int start = 0;
 		int end = 0;
-		while(end<text.size()){
+		while(end<text.size() && !text.substring(end,text.size()).trim().equals("")){
 			start=end;
 			end += calcEnd(text.substring(start, text.size()));
 			log.trace "Start/End cut "+start+" "+end
-			setProp(f, text.substring(start, end));
-			end++;
+			log.trace text.substring(start, end)
+			setProp(f, text.substring(start, Math.min(text.size(), end)));
+			end+=3;
 		}
 		
 		log.info "Feature loaded from file: "+ f.toString();
@@ -48,12 +49,13 @@ class FeatureImportService implements InitializingBean {
 	private void setProp(Feature f, text){
 		int propEnd = text.indexOf("=");
 		String prop = text.substring(0,propEnd).trim();
-		String value = text.substring(propEnd+1, text.size()).replaceAll("\\*","").trim();
+		String value = text.substring(propEnd+1, text.size()).replace("***","").trim();
 		f[prop]=value;
+		log.trace prop+"= "+value
 	}
 	
 	private int calcEnd(String text){
-		return text.indexOf("*", text.indexOf("*")+1);
+		return text.indexOf("***", text.indexOf("***")+2);
 	}
 
 	def updateFeature(f){

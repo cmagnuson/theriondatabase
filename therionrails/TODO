@@ -1,25 +1,37 @@
 TODO:
--add area/generic line features...
 -sanity checking on import, print out errors
 -minimized list of survey stations/connections in survey view (or maybe view of data as imported?)
 -make fi code auto-include color code?
 -legend for tunnelsystems and colors
 -fixed-point entry/update as lon/lat
--notes for features (and their display on generated maps)
 -simple testing of views pages, just for exceptions
+-show fi's on survey connections
+	-auto-replace default lining?
+	-or prompt to replace if adding a lining to sc with existing lining?
+-move featureimport to auto on compile
+-survey list use name in summary
+-tag library to find points, segments, survey, etc. by tunnel system, then survey, then... AJAX or not?
+-condense point/line into one bigger definition, let outputScrap decide based on sc/ss null	
 
 Needed Features:
 -backfilled sand -3/5/11/35
--brick liner -14-15
+	-2nd 4/5
 -pipe under wall? - 19
 -conc. liner
 -conc. wall - 44/31
--add features for 2nd survey
+-note type (or associated with features) -notes for features (and their display on generated maps)
+	-2nd 9/12 (2x4 to ceil, poured conc. above)
 
-Resurvey:
+Soon Needed Features:
+-power lines
+-pipes
+
+Resurvey/Tag:
 1-2 accurate distance
 toolsts ledge to center - distance and angles
 2nd check 18-19, see notes
+2nd all tags
+-brick liner -MN 14-15
 
 Done:
 -notes/original survey data for surveys
@@ -51,3 +63,4 @@ Skipped:
 -users and privledges - view vs. create/update vs. admin..?
 -google map of KML on main page
 -compare laptop/vs. server LRUD walls, fix if needed
+-add area/generic line features...
