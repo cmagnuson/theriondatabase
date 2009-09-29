@@ -15,14 +15,12 @@ TODO:
 -transfer of prod db -> dev automatically for improved testing... if connection is possible
 
 Needed Features:
--backfilled sand -3/5/11/35
-	-2nd 4/5
 -pipe under wall? - 19
 -conc. liner
 -conc. wall - 44/31
 -note type (or associated with features) -notes for features (and their display on generated maps)
 	-2nd 9/12 (2x4 to ceil, poured conc. above)
-
+	
 Soon Needed Features:
 -power lines
 -pipes
@@ -32,7 +30,6 @@ Resurvey/Tag:
 toolsts ledge to center - distance and angles
 2nd check 18-19, see notes
 2nd all tags
--brick liner -MN 14-15
 
 Done:
 -condense point/line into one bigger definition, let outputScrap decide based on sc/ss null	
@@ -58,6 +55,7 @@ Done:
 -inside outside fixes on lines
 -defaults for features
 -sorting surveyStations/surveyConnections in survey view based on dateSurveyed
+added -backfilled sand -3/5/11/35	-2nd 4/5
 
 Skipped:
 -joins for all lines in each survey (thbook 29-30)
