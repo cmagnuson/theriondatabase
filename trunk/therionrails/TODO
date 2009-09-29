@@ -8,10 +8,11 @@ TODO:
 -show fi's on survey connections
 	-auto-replace default lining?
 	-or prompt to replace if adding a lining to sc with existing lining?
--move featureimport to auto on compile
 -survey list use name in summary
 -tag library to find points, segments, survey, etc. by tunnel system, then survey, then... AJAX or not?
--condense point/line into one bigger definition, let outputScrap decide based on sc/ss null	
+-do test on all features - make a survey with an item tagged w/ each one
+-database backup option
+-transfer of prod db -> dev automatically for improved testing... if connection is possible
 
 Needed Features:
 -backfilled sand -3/5/11/35
@@ -34,6 +35,8 @@ toolsts ledge to center - distance and angles
 -brick liner -MN 14-15
 
 Done:
+-condense point/line into one bigger definition, let outputScrap decide based on sc/ss null	
+-move featureimport to auto on compile
 -notes/original survey data for surveys
 -loading of features from text/properties file
 -add manual compile link

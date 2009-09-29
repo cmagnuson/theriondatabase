@@ -24,15 +24,19 @@ class FeatureImportService implements InitializingBean {
 	def importFromFiles(){
 		File folder = new File(PATH);
 		for(File f: folder.listFiles()){
+			if(f.getName().startsWith(".")){
+				continue;
+			}
 			importFile(f);
 		}
 	}
 	
-	def importFile(File file){
+	def importFile(File file){	
 		def text = file.getText();
 		Feature f = new Feature();
 		int start = 0;
 		int end = 0;
+		log.info "Importing from: "+file.getAbsolutePath();
 		while(end<text.size() && !text.substring(end,text.size()).trim().equals("")){
 			start=end;
 			end += calcEnd(text.substring(start, text.size()));
