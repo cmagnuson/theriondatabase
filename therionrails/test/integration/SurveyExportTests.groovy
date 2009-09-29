@@ -9,6 +9,10 @@ class SurveyExportTests extends GrailsUnitTestCase {
 		therionService = new TherionService();
 		therionService.PATH = "web-app/generated/source/";
 		therionService.OUTPUT_PATH = "../output/";
+
+		def featureImportService = new FeatureImportService();
+		featureImportService.PATH = "web-app/WEB-INF/features/";
+		therionService.featureImportService = featureImportService
 	}
 
 	protected void tearDown() {

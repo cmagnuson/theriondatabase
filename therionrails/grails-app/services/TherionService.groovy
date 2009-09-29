@@ -11,13 +11,14 @@ class TherionService implements InitializingBean
 
 	public static final Double FEET_TO_METERS =  0.3048;
 
+	def featureImportService
 	def grailsApplication
 	def setting
 	def servletContext
 	def PATH
 	def OUTPUT_PATH
 	def exportStart
-
+	
 	void afterPropertiesSet()
 	{
 		this.setting = grailsApplication.config.setting
@@ -29,6 +30,8 @@ class TherionService implements InitializingBean
 	def void exportSurvey(){
 		exportStart = System.currentTimeMillis();
 
+		featureImportService.importFromFiles()
+		
 		checkDirectories()
 
 		assignAllSurveyCords()
@@ -210,7 +213,8 @@ class TherionService implements InitializingBean
 			//default sandstone lining if none assigned
 			if(fi==null){
 				fi = new FeatureInstance(surveyConnection:sc, feature:Feature.findByName("Sandstone Wall"));
-				fi.save();
+				//do not want to persist default to db, not nessisary
+				//fi.save();
 			}
 
 			double angle = (90+ Math.atan2(upper.scrapY-lower.scrapY, upper.scrapX-lower.scrapX)*180/Math.PI);
@@ -221,7 +225,7 @@ class TherionService implements InitializingBean
 
 			double leftRight = Math.cos(angle)*scl;
 			double upDown = Math.sin(angle)*scl;
-			output+=fi.generateScrapString()+" -id "+fi.id+".0\n";
+			output+=fi.generateScrapString()+"\n";
 			//join+=fi.id+".0 ";
 			
 			output+=(lower.scrapX-sc.left*leftRight)+" "+(lower.scrapY-sc.left*upDown)+"\n";
@@ -229,7 +233,7 @@ class TherionService implements InitializingBean
 
 			output+="endline\n";
 
-			output+=fi.generateScrapString()+" -id "+fi.id+".1\n";
+			output+=fi.generateScrapString()+"\n";
 			//join+=fi.id+".1 ";
 			
 			output+=(upper.scrapX+sc.right*leftRight)+" "+(upper.scrapY+sc.right*upDown)+"\n";			
