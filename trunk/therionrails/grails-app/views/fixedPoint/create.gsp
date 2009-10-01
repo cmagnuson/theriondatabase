@@ -55,28 +55,28 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="x">X:</label>
+                                    <label for="x">Longitude:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:fixedPointInstance,field:'x','errors')}">
-                                    <input type="text" id="x" name="x" value="${fieldValue(bean:fixedPointInstance,field:'x')}" />
+                                    <input type="text" id="lon" name="lon" value="${fieldValue(bean:fixedPointInstance,field:'x')}" />
                                 </td>
                             </tr> 
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="y">Y:</label>
+                                    <label for="y">Latitude:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:fixedPointInstance,field:'y','errors')}">
-                                    <input type="text" id="y" name="y" value="${fieldValue(bean:fixedPointInstance,field:'y')}" />
+                                    <input type="text" id="lat" name="lat" value="${fieldValue(bean:fixedPointInstance,field:'y')}" />
                                 </td>
                             </tr> 
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="z">Z:</label>
+                                    <label for="z">Height (feet):</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:fixedPointInstance,field:'z','errors')}">
-                                    <input type="text" id="z" name="z" value="${fieldValue(bean:fixedPointInstance,field:'z')}" />
+                                    <input type="text" id="height" name="height" value="${fieldValue(bean:fixedPointInstance,field:'z')}" />
                                 </td>
                             </tr> 
                         

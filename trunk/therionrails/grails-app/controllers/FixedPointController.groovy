@@ -1,5 +1,4 @@
 
-
 class FixedPointController {
     
     def index = { redirect(action:list,params:params) }
@@ -93,6 +92,13 @@ class FixedPointController {
 
     def save = {
         def fixedPointInstance = new FixedPoint(params)
+        if(params.lat!=null && params.lon!=null && params.height!=null){
+    		def ll = new uk.me.jstott.jcoord.LatLng(Double.valueOf(params.lat), Double.valueOf(params.lon))
+    		def ref = ll.toUTMRef()
+    		fixedPointInstance.x = ref.getEasting()
+    		fixedPointInstance.y = ref.getNorthing()
+    		fixedPointInstance.z = Double.valueOf(params.height)*TherionService.FEET_TO_METERS
+        }
         if(FixedPoint.findAllByStation(fixedPointInstance.station).size()>0){
         	flash.message = "Fixed point for this survey station already exists!"
         	redirect(action:show, id:FixedPoint.findByStation(fixedPointInstance.station).id)

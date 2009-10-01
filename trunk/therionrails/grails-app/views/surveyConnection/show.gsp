@@ -98,6 +98,20 @@
                             <td valign="top" class="value">${fieldValue(bean:surveyConnectionInstance, field:'up')}</td>
                             
                         </tr>
+
+					<tr class="prop">
+                            <td valign="top" class="name">Features:</td>
+                            
+                            <td  valign="top" style="text-align:left;" class="value">
+                                <ul>
+                                <g:each var="f" in="${FeatureInstance.findAllBySurveyConnection(surveyConnectionInstance)}">
+                                    <li><g:link controller="featureInstance" action="show" id="${f.id}">${f?.feature?.encodeAsHTML()}</g:link></li>
+                                </g:each>
+                                </ul>
+                            </td>
+                            
+                        </tr>
+					
                     
                     </tbody>
                 </table>
