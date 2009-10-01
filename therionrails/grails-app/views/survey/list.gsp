@@ -21,36 +21,28 @@
                     <thead>
                         <tr>
                         
-                   	        <g:sortableColumn property="id" title="Id" />
-                        
-                   	        <g:sortableColumn property="dateentered" title="Dateentered" />
-                        
-                   	        <g:sortableColumn property="datesurveyed" title="Datesurveyed" />
+                   	        <g:sortableColumn property="title" title="Title" />
+                                                
+                   	        <g:sortableColumn property="datesurveyed" title="Date Surveyed" />
                         
                    	        <g:sortableColumn property="note" title="Note" />
                         
                    	        <th>System</th>
-                   	    
-                   	        <g:sortableColumn property="team" title="Team" />
-                        
+                   	                            
                         </tr>
                     </thead>
                     <tbody>
                     <g:each in="${surveyInstanceList}" status="i" var="surveyInstance">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                         
-                            <td><g:link action="show" id="${surveyInstance.id}">${fieldValue(bean:surveyInstance, field:'id')}</g:link></td>
-                        
-                            <td>${fieldValue(bean:surveyInstance, field:'dateentered')}</td>
-                        
+                            <td><g:link action="show" id="${surveyInstance.id}">${fieldValue(bean:surveyInstance, field:'title')}</g:link></td>
+                                                
                             <td>${fieldValue(bean:surveyInstance, field:'datesurveyed')}</td>
                         
                             <td>${fieldValue(bean:surveyInstance, field:'note')}</td>
                         
                             <td>${fieldValue(bean:surveyInstance, field:'system')}</td>
-                        
-                            <td>${fieldValue(bean:surveyInstance, field:'team')}</td>
-                        
+                                                
                         </tr>
                     </g:each>
                     </tbody>

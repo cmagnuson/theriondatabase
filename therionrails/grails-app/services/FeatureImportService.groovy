@@ -21,7 +21,7 @@ class FeatureImportService implements InitializingBean {
 		this.PATH = servletContext.getRealPath("/")+"/WEB-INF/features/"
 	}
 	
-	def importFromFiles(){
+	def synchronized importFromFiles(){
 		File folder = new File(PATH);
 		for(File f: folder.listFiles()){
 			if(f.getName().startsWith(".")){

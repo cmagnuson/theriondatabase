@@ -83,5 +83,6 @@
 	<classpathentry kind="var" path="GRAILS_HOME/dist/grails-web-1.1.1.jar"/>
 	<classpathentry kind="var" path="GRAILS_HOME/dist/grails-webflow-1.1.1.jar"/>
 	<classpathentry exported="true" kind="con" path="GROOVY_SUPPORT"/>
+	<classpathentry kind="lib" path="lib/jcoord-1.1-b.jar"/>
 	<classpathentry kind="output" path="web-app/WEB-INF/classes"/>
 </classpath>

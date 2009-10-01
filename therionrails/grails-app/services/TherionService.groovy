@@ -27,7 +27,7 @@ class TherionService implements InitializingBean
 		this.OUTPUT_PATH = "../output/";
 	}
 
-	def void exportSurvey(){
+	def synchronized void exportSurvey(){
 		exportStart = System.currentTimeMillis();
 
 		featureImportService.importFromFiles()
