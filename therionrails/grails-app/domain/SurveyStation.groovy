@@ -18,6 +18,7 @@ class SurveyStation {
     double scrapY
     static hasMany = [featureInstances : FeatureInstance]
 
+    String label="";
     
     public String toString(){
     	survey.title+" : "+name

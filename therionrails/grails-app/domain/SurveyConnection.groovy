@@ -19,6 +19,8 @@ class SurveyConnection {
     double up;
     double down;
     Date dateCreated;
+    String label = "";
+    
     static hasMany = [featureInstances : FeatureInstance]
     
     public String toString(){

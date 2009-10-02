@@ -52,6 +52,15 @@
                                     <input type="text" id="down" name="down" value="${fieldValue(bean:surveyConnectionInstance,field:'down')}" />
                                 </td>
                             </tr> 
+                            
+                           <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="label">Label:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:surveyConnectionInstance,field:'label','errors')}">
+                                    <input type="text" id="label" name="label" value="${fieldValue(bean:surveyConnectionInstance,field:'label')}" />
+                                </td>
+                            </tr> 
                         
                             <tr class="prop">
                                 <td valign="top" class="name">

@@ -56,6 +56,13 @@
                             <td valign="top" class="value">${fieldValue(bean:surveyStationInstance, field:'timeMeasured')}</td>
                             
                         </tr>
+                        
+                       <tr class="prop">
+                            <td valign="top" class="name">Label:</td>
+                            
+                            <td valign="top" class="value">${fieldValue(bean:surveyStationInstance, field:'label')}</td>
+                            
+                        </tr>
                    
                           <tr class="prop">
                             <td valign="top" class="name">Features:</td>
