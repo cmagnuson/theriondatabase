@@ -64,6 +64,15 @@
                                     <g:datePicker name="timeMeasured" value="${surveyStationInstance?.timeMeasured}" precision="minute" ></g:datePicker>
                                 </td>
                             </tr> 
+                            
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="label">Label:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:surveyStationInstance,field:'label','errors')}">
+                                    <input type="text" id="label" name="label" value="${fieldValue(bean:surveyStationInstance,field:'label')}"/>
+                                </td>
+                            </tr> 
                         
                         </tbody>
                     </table>

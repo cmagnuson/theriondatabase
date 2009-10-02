@@ -6,21 +6,18 @@ TODO:
 -tag library to find points, segments, survey, etc. by tunnel system, then survey, then... AJAX or not?
 -do test on all features - make a survey with an item tagged w/ each one
 -collect video for existing surveys
-
+-video class, tag surveys w/ 0+ of them, can add to other classes if wanted
+-note line implemenetation, (for notes with features, also road name imp)
 
 Needed Features:
 -pipe under wall? - 19
 -height on interconnect
--note type (or associated with features) -notes for features (and their display on generated maps)
-	-2nd 9/12 (2x4 to ceil, poured conc. above)
-	
+
 Soon Needed Features:
 -power lines - see DC email
 -pipes - see DC email
 
 Resurvey:
-1-2 accurate distance
-toolsts ledge to center - distance and angles
 2nd check 18-19, see notes
 
 
@@ -54,6 +51,11 @@ Done:
 -sorting surveyStations/surveyConnections in survey view based on dateSurveyed
 -added -backfilled sand -3/5/11/35	-2nd 4/5
 -added -conc. wall - 44/31, and liner
+-added -rock rubble
+	-MN 41/43/44/46
+-added note type (or associated with features) -notes for features (and their display on generated maps)
+	-2nd 9/12 (2x4 to ceil, poured conc. above)
+	-MN 39 - poured conc., crawlable, 105 - possible dig under
 -make manual compile schedule a compile immediatly... - made it synchronized instead... not perfect solution but works
 -make compile schedule a featureimport immediatly (or somehow block on it - make syncronized) - just made synchronized
 
@@ -70,3 +72,7 @@ Skipped:
 -database backup option
 -transfer of prod db -> dev automatically for improved testing... if connection is possible
 -minimized list of survey stations/connections in survey view (or maybe view of data as imported?)
+
+Resurvey Done:
+MN  - 1-2 accurate distance
+	- toolsts ledge to center - distance and angles
