@@ -1,3 +1,4 @@
+import java.util.Calendar;
 import java.io.BufferedReader;
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -147,6 +148,8 @@ class TherionService implements InitializingBean
 		}
 		p.waitFor();
 
+		LastCompile.compileDate = Calendar.getInstance().getTime().toString();
+		
 		if(p.exitValue()!=0){
 			log.error "Compile failed, exit value: "+p.exitValue();
 			LastCompile.status="<font color=\"red\">FAILURE</font>";
@@ -462,7 +465,9 @@ class TherionService implements InitializingBean
 		"  scale 1 100\n" + 
 		"  grid-size 1 1 1 m\n" + 
 		"endlayout\n" + 
-		"export map -fmt xvi -layout xvi-export -o "+OUTPUT_PATH+"cave.xvi\n";
+		"export map -fmt xvi -layout xvi-export -o "+OUTPUT_PATH+"cave.xvi\n"+
+		"\n"+
+		"system \"convert "+OUTPUT_PATH+"cave.pdf "+OUTPUT_PATH+"cave.jpg\"\n";
 		File f = new File(PATH+"thconfig")
 		f.setText(config); 
 	}
@@ -483,7 +488,9 @@ class TherionService implements InitializingBean
 		"endlayout\n"+
 		"export map -fmt xvi -output "+OUTPUT_PATH+"singlesurvey.xvi\n"+
 		"export map -layout names -output "+OUTPUT_PATH+"indivsurveys/"+s.id+".pdf\n"+
-		"export map -layout names -format svg -output "+OUTPUT_PATH+"indivsurveys/"+s.id+".svg\n";
+		"export map -layout names -format svg -output "+OUTPUT_PATH+"indivsurveys/"+s.id+".svg\n\n"+
+		"system \"convert "+OUTPUT_PATH+"indivsurveys/"+s.id+".pdf "+OUTPUT_PATH+"indivsurveys/"+s.id+".jpg\"\n";
+		
 		File f = new File(PATH+"thconfig")
 		f.setText(config); 
 	}

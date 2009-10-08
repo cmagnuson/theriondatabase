@@ -2,26 +2,25 @@ TODO:
 -sanity checking on import, print out errors
 -legend for tunnelsystems and colors
 -simple testing of views pages, just for exceptions
--FI - prompt to replace if adding a lining to sc with existing lining?
 -tag library to find points, segments, survey, etc. by tunnel system, then survey, then... AJAX or not?
 -do test on all features - make a survey with an item tagged w/ each one
--collect video for existing surveys
 -video class, tag surveys w/ 0+ of them, can add to other classes if wanted
--note line implemenetation, (for notes with features, also road name imp)
+-note line implementation, (for notes with features, also road name imp)
+-fix label overlapping other features, maybe auto-offset label? or label w/ arrow?
 
 Needed Features:
--pipe under wall? - 19
--height on interconnect
-
-Soon Needed Features:
+-height on interconnect (and coloring of higher system??)
 -power lines - see DC email
--pipes - see DC email
+-pipes - see DC email  -add both to last W survey
+
 
 Resurvey:
-2nd check 18-19, see notes
-
+-2nd check 18-19, see notes
+-collect video for existing surveys
+-water first survey - 3->5 missing, shot up to top of shaft in drift, see notes for 5 features
 
 Done:
+-embedding of svg into website more brower compliant... OR converting to jpg (either svg or pdf_
 -fixed-point entry/update as lon/lat
 -show fi's on survey connections
 -data entry of original survey notes
@@ -68,10 +67,13 @@ Skipped:
 -compare laptop/vs. server LRUD walls, fix if needed
 -add area/generic line features...
 -make fi code auto-include color code?
--embedding of svg into website more brower compliant... OR converting to jpg (either svg or pdf_
 -database backup option
 -transfer of prod db -> dev automatically for improved testing... if connection is possible
 -minimized list of survey stations/connections in survey view (or maybe view of data as imported?)
+-feature - -pipe under wall? - MN N 19
+-FI - prompt to replace if adding a lining to sc with existing lining?
+-detail levels - hide/show drifts on different maps
+
 
 Resurvey Done:
 MN  - 1-2 accurate distance

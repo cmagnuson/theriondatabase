@@ -3,6 +3,17 @@ html * {
     /*padding: 0; SELECT NOT DISPLAYED CORRECTLY IN FIREFOX */
 }
 
+/* IMAGES - to fit on surveys and front page well */
+.frontimg {
+	max-width: 900px;
+	max-height: 550px;
+}
+
+.survimg {
+	max-width: 700px;
+	max-height: 400px;
+}
+
 /* GENERAL */
 
 .spinner {
@@ -12,7 +23,7 @@ html * {
 }
 
 body {
-    background: #fff;
+    background: url("/therionrails/images/bg.jpg") 30% 30%;
     color: #333;
     font: 11px verdana, arial, helvetica, sans-serif;
 }

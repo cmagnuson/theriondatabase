@@ -22,7 +22,7 @@
             
             
             	<center><g:link url="${createLinkTo(dir:'generated/output/indivsurveys', file:surveyInstance.id+'.pdf')}">
-   			 <img src="${createLinkTo(dir:'generated/output/indivsurveys', file:surveyInstance.id+'.svg')}"  width="50%" height="50%">
+   			 <img src="${createLinkTo(dir:'generated/output/indivsurveys', file:surveyInstance.id+'.jpg')}" class="survimg">
 				</g:link>
             </center>
             <br>
